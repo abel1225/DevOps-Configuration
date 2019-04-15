@@ -18,7 +18,7 @@ vi /etc/profile
 export LOGSTASH_HOME=/data/software/logstash/logstash/
 export PATH=$LOGSTASH_HOME/bin:$LOGSTASH_HOME/config:$PATH
 
-完成后，再运行如下命令：
+完成后，再运行如下命令使变更生效：
 . /etc/profile
 (注：/etc/profile 前面有一个小点和空格)
 
