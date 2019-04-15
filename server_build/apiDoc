@@ -1,0 +1,4 @@
+ApiDoc 使用
+进入项目根目录使用命令(大意:在根目录 src编译api至目标目录target下，并忽略target目录检查)
+apidoc -i [folder(./src)] -e [foler(./target)] -o [foler(./target)]
+例: apidoc -i ./ -e ./src/main/resources/static/doc -o ./src/main/resources/static/doc

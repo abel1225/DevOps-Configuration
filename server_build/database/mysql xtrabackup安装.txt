@@ -1,0 +1,15 @@
+安装libev
+1.
+下载地址:http://dist.schmorp.de/libev
+
+安装DBI(perl连接数据库组件)
+1.
+下载地址:https://metacpan.org/pod/DBI
+
+
+安装DBD
+1.解压缩DBD(版本4.033)安装包，并进入解压目录
+下载地址:https://metacpan.org/pod/DBD::mysql
+2.执行命令
+perl Makefile.PL --mysql_config=/var/lib/mysql/
+

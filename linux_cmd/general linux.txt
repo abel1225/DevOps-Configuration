@@ -1,0 +1,438 @@
+start tomcat:
+in bin dir:./startup.sh
+
+stop tomcat：
+in bin dir:./shutdown.sh
+
+unzip war(unzip to current dir):
+jar -xvf game.war
+
+view log：
+tail -f catalina.out
+
+delete dir:
+rm -rf fuWallet
+
+move file:
+mv fuWallet.war ROOT
+
+view thread:
+ps -ef | grep java
+
+kill thread:
+kill -9 [PID]
+
+check port stat:
+netstat -anp|grep 9999
+
+view thread by ipv4:
+lsof -Pnl +M -i4
+
+lock screen:
+ctrl+G (scroll Lock)
+
+unlock screen:
+ctrl+Q
+
+clear screen:
+ctrl+l
+
+awk 数据分析
+#按空格分隔后取文件中最后一项大于10000且包含字符串wxMchntAdd的列
+awk '($NF > 10000 && /wxMchntAdd/){print}' localhost_access_log.2017-10-31.txt
+
+remove while file size is 0：
+#rm -i `find ./ -size 0`
+#find ./ -size 0 -exec rm {} \;
+
+find ./ -name *.bmp -size 0 -type f| xargs rm -f &
+
+compress file to target folder
+tar -czvf filename.tar targetFolder
+gzip FileName
+bzip2 -z FileName
+tar jcvf FileName.tar.bz2 DirName
+compress FileName
+tar Zcvf FileName.tar.Z DirName
+zip FileName.zip DirName
+
+uncompress file
+tar -xzvf filename.tar
+gunzip FileName.gz or gzip -d FileName.gz
+bzip2 -d FileName.bz2 or bunzip2 FileName.bz2
+tar jxvf FileName.tar.bz2
+uncompress FileName.Z
+tar Zxvf FileName.tar.Z
+unzip FileName.zip
+
+clear file content:
+1、> /var/log/asterisk/messages 或者 :> /var/log/asterisk/messages （文件大小被截为0字节）
+
+2、cat /dev/null > /var/log/asterisk/messages （文件大小被截为0字节）
+
+3、echo "" > /var/log/asterisk/messages（文件大小被截为1字节）
+
+
+
+$grep -5 'parttern' inputfile //打印匹配行的前后5行
+
+$grep -C 5 'parttern' inputfile //打印匹配行的前后5行
+
+$grep -A 5 'parttern' inputfile //打印匹配行的后5行
+
+$grep -B 5 'parttern' inputfile //打印匹配行的前5行
+
+[root@master ~]# cat /etc/issue
+[root@master ~]# lsb_release -a
+[root@master ~]# cat /proc/version
+
+view authority of file
+ls -1 file
+
+change authority of file
+[文件属主（u） 增加写权限,与文件属主同组用户（g） 增加写权限,其他用户（o） 删除执行权限]
+chmod u+x a.out
+
+chmod ugo+x *.sh
+
+------------------vi------------------------
+view file
+vi [fileName]
+
+search str
+/[str]
+
+search next
+n
+
+exit [ctrl+c] without saving
+:q!
+
+exit and save (if current file has been edit)
+:x
+
+exit and save
+zz
+
+write
+:w [fileName]
+
+write current file
+:W
+
+
+
+ Linux：使用文本文件来保持配置文件
+ 文本编辑器：ASCII文件
+    emacs vi
+   vi：Visual Interface
+   全屏文本编辑,nano
+   模式化的编辑器
+
+   moduler
+   vim ：vi improved
+   vi的模式：
+     编辑模式：键盘操作通常被解析为编辑命令：
+     输入模式：
+     末行模式：vim的内置的命令行接口，执行vim内置命令
+   编辑模式-->输入模式
+    i：当前光标处输入内容
+    I:在当前光标所在行的行首
+    a：在当前光标所在处的后面
+    A:在当前光标所在行的行尾输入
+    o：在光标所在行的下方新增一行空白行
+    O:在光标所在行的上方新增一行空白行
+
+    输入模式-->编辑模式
+    ESC
+    编辑模式-->末行模式
+    ：
+    末行模式-->编辑模式
+    ESC，ESC
+   vi命令的使用格式
+     vim [options] /path/to/file
+   退出：
+   ：q！强制退出，不保存并退出
+   ：wq 保存修改并退出
+   ：x，保存并退出
+   编辑模式：ZZ,保存退出
+  打开：
+     多文件跳转
+     ：next 下一个
+     ：prev  上一个
+     ：first 第一个
+     ：last 最后一个
+     ：qall 退出所有的文件
+     ：wqall：修改并退出多个文件
+     分隔窗口打开多个文件
+     -o：水平分隔
+         ctrl+w，左右箭头
+     -O：垂直分隔
+         ctrl+W，上下箭头
+     +#：打开文件后在第#号行首
+     +：打开文件后在最后一行
+   光标移动：
+     单字符移动：
+        h：左
+        l：右
+        j：下
+        k：上
+      可以和数字组合
+      单词间移动：
+         w：调至下一个单词的词首
+         b：当前或前一个的词首
+	 e：当前或下一个词的词尾
+      行内移动：
+         0：绝对行首
+	 ^:第一个非空白字符
+	 $:绝对行尾
+      句子间移动：
+         ）：上一句
+        （: 下一句
+      段落间移动：
+         }：上一段
+         {：下一段
+      行间移动：
+         #G：第几行
+         G：最后一行
+      编辑操作：
+         x：删除光标所在处的字符
+         #x:删除光标所在处向后的#个字符
+	 r：替换光标所在处的字符
+
+	 d:删除命令
+	   结果光标跳转命令使用
+	   %:全部
+	 dd：删除一行
+	 #dd：删除所在行后的#行
+ 末行模式：范围定界
+    start，end：可以使用绝对定界，也可以使用相对定界
+       .:表示当前行
+       $:最后一行
+       $-2:倒数第3行
+       /pat1/，/pat2/：起始处为光标所在行
+        c：改变
+           跟d一样操作
+        y：yank，复制
+	   跟d一样操作
+	p：paste 粘贴
+	  复制或删除的是整行
+	    p：当前行的下一行
+	    P：当前行的上一行
+           复制或删除的为非整行
+	    p：粘贴在光标所在字符的后面
+	    P: 粘贴在光标所在字符的前面
+	撤销编辑
+	  u：undo
+	  #u：最近50次操作
+	 撤销此前的撤销操作
+	 ctrl+r：
+	 重复执行此前的命令：
+	  .
+   翻屏：
+        ctrl+f：向文件尾部翻一屏
+        ctrl+b：向文件首部翻一屏
+        ctrl+d：向文件尾部翻半屏
+        ctrl+u：向文件首部翻半屏
+        Enter：下一行
+        k ：上一行
+   查找：
+       /keyword
+       ？keyword
+       n：
+       N：
+       支持正则表达式
+       ：set nohlsearch 关闭高亮显示，对当前shell有效
+
+vim的可视化模式
+编辑模式：
+ v:按照光标走过的区域选择
+ V：选择矩形块
+vim可视化模式：
+	v: 按光标走过的区域选择
+	V: 选择矩形块
+
+打开多个文件，分窗口：
+	vim -o
+	vim -O
+	Ctrl+w, 上下箭头
+
+分割当前窗口：
+	Ctrl+w, s
+	Ctrl+w, v
+
+窗口属性的定义：
+	:set nu
+	:set nonu
+
+    自动缩进
+	:set ai
+	:set noai
+
+	忽略大小写
+	:set ic
+	:set noic
+
+	显示对应的括号
+	:set sm (show match)
+	:set nosm
+
+	语法高亮：
+	:syntax on
+	:syntax off
+
+	搜索高亮：
+	:set hlsearch
+	:set nohlsearch
+	更改文件格式：
+	:set ff(fileformat)=unix
+
+
+VI中的多行删除与复制
+法一：
+单行删除，：1（待删除行）d
+多行删除 ，：1,10d
+法二：
+光标所在行，dd
+光标所在行以下的N行，Ndd
+方法1：
+光标放到第6行，
+输入：2yy
+光标放到第9行，
+输入：p
+此方法适合复制少量行文本的情况，复制第6行（包括）下面的2行数据，放到第9行下面。
+方法2：
+命令行模式下输入
+6,9 co 12
+复制第6行到第9行之间的内容到第12行后面。
+方法3：
+有时候不想费劲看多少行或复制大量行时，可以使用标签来替代
+光标移到起始行，输入ma
+光标移到结束行，输入mb
+光标移到粘贴行，输入mc
+然后 :'a,'b co 'c 把 co 改成 m 就成剪切了
+要删除多行的话，可以用 ：5, 9 de
+
+VIM常用命令
+常用命令
+
+1) 光标命令
+k,j,h,l---上下左右光标移动命令，虽然可以在Linux中使用键盘右边的四个光标键， 但是记住这四个命令还有非常有用的，也就是右手在键盘上放置的位置部分
+nG ----n为行数，该命令立即使光标跳到指定行。
+Ctrl+G-----光标所在位置的行数和列数报告
+w,b------使光标向前或向后跳过一个单词
+2) 编辑命令
+i,a,r -------在光标的前,后,上方插入字符命令(i=insert,a=append,r=replace)
+cw,dw------ 改变(置换)/删除光标所在处的单词的命令 (c=change,d=delete)
+x,d$,dd -----删除一个字符，光标所在处到行尾的所有字符，和整行的命令
+3) 查找命令
+/string, ?string-----从光标所在处向后/向前查找相应的字符串的命令
+4)拷贝复制命令
+yy,p -----拷贝一行到剪贴板/取出剪贴板中内容的命令
+
+常见问题及应用技巧
+1) 在一个新文件中读/etc/passwd中的内容，取出用户名部分
+vi file
+:r /etc/passwd 在打开的文件file中光标所在处读入/etc/passwd
+:%s/:.*//g 删除/etc/passwd中用户名后面的从冒号开始直到行尾的所有部分
+:3r /etc/passwd 这是在指定的行号后面读入文件内容
+另外一种方法删掉文件中所有的空行及以#开始的注释行
+#cat squid.conf.default | grep -v '^$' | grep -v '^#'
+
+2) 在打开一个文件编辑后才知道登录的用户对该文件没有写权，不能存盘
+vi file
+:w /tmp/1 既然没法存盘，不想放弃所做的所有修改，先临时存到/tmp/1
+:20,59w /tmp/1 或者仅仅把第20到59行之间的内容存盘成文件/tmp/1
+3) 用VI编辑一个文件，但需要删除大段大段的内容
+vi file
+Ctrl+G 把光标移到需要删除的行的处按ctrl+G显示行号，再到结尾处再按Ctrl+G.
+:23,1045d 假定两次行号为23和1045，则把这几间的内容全删除
+
+也可以在开始和结束两行中用ma,mb命令标记后用:'a,'bd删除.
+4) 在整个文件或某几行中在行首或行尾加一些字符串
+vi file
+:3,$s/^/some string / 在文件的第一行至最后一行的行首前插入some string
+:%s/$/ some string/g 在整个文件每一行的行尾添加 some string
+
+:%s/string1/string2/g 在整个文件中替换string1成string2
+:3,7s/string1/string2/ 仅替换文件中的第三到七行中的string1成string2
+
+Note: s为substitute,%表示所有行,g表示global
+
+5) 同时编辑两个文件,在两个文件中拷贝剪贴文本
+vi file1 file2
+yy 同时打开两个文件,在文件1的光标所在处拷贝所在行
+:n 切换到文件2 (n=next)
+p 在文件2的光标所在处粘贴所拷贝的行
+:N 切换回文件1
+6) 替换文件中的路径
+
+:%s#/usr/bin#/bin#g 把文件中所有路径/usr/bin换成/bin
+或者用
+:%s//usr/bin//bin/g 在'/'前用符号指出'/'是真的单个字符'/'
+7) 用 vi 多行注释
+如果要给多行程序作注释，一个笨办法就是 插入 # ，然后用 j 跳到下一行用 . 命令，重复上个命令。如果要注释几百行，这样的方法恐怕太愚蠢了。一个聪明的办法是：
+:.,+499 s/^/#/g
+若需全文的行首插入可用以下命令
+:%s/^/#/g
+
+
+bg（将作业放置于后台执行）
+（在前台执行时间过长，则可以按ctrl+z，暂停进程，用bg放其至后台）
+bg 作业IDfg（把作业放置前台执行）
+fg（把作业放置前台执行）
+jobs（查看后台作业）
+
+get sys page size:
+getconf PAGESIZE
+
+
+connect to mysql:
+
+连接：
+mysql -h10.0.6.53 -uistreet -pbtaKZbGh5T8KLa2p -P2274 istreet_db
+
+#mysql -h112.124.21.135 -uppxi -pwchppxi -P3306 ppxidb
+
+
+执行文件：
+source ***.sql;
+
+
+MySQL导出导入命令的用例
+
+1.导出整个数据库
+
+
+
+mysqldump -u 用户名 -p 数据库名 > 导出的文件名
+
+mysqldump -u wcnc -p smgp_apps_wcnc > wcnc.sql
+
+
+
+2.导出一个表
+
+
+
+mysqldump -u用户名 -p密码 -t 数据库名 表名> 导出的文件名
+
+mysqldump -uistreet -pbtaKZbGh5T8KLa2p -t istreet_db t_is_images > /apphome/fy_zhj/bak/t_is_images.sql
+
+
+导出单个表：
+mysqldump -uroot -ppassword --database dbname --tables users > /home/root/users.sql
+
+导出整个数据库：
+mysqldump -uroot -ppassword --database dbname > /home/root/dbname.sql
+详细请参考：http://www.codesky.net/article/201005/119310.html
+
+3.导出一个数据库结构
+
+
+
+mysqldump -u wcnc -p -d --add-drop-table smgp_apps_wcnc >d:wcnc_db.sql
+
+-d 没有数据 --add-drop-table 在每个create语句之前增加一个drop table
+
+

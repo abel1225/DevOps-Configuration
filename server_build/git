@@ -1,0 +1,5 @@
+GIT 屏蔽SSL验证
+git config --global http.sslVerify "false"
+GIT 慢
+git config --global http.postBuffer 524288000
+

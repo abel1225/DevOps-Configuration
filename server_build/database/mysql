@@ -1,0 +1,12 @@
+mysql多实例
+#mysqld --defaults-file=/var/lib/my3308.cnf --datadir=/var/lib/mysql3308 --user=mysql --basedir=/var/lib/mysql  --initialize-insecure
+#mysql_ssl_rsa_setup --user=mysql --basedir=/var/lib/mysql --datadir=/var/lib/mysql3308
+1.在my.cnf中新增实例(/etc/my.cnf)
+2.systemctl start mysqld@3308
+3.setenforce 0
+4.更改密码alter user 'root'@'localhost' identified by 'Pwd@bp1234';
+
+多实例登录
+mysql -uroot -S /var/lib/mysql3308/mysql.sock -p
+root密码: Pwd@bp1234
+
