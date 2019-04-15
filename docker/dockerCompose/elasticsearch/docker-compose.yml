@@ -1,0 +1,61 @@
+version: "2"
+services:
+  es:
+    image: elasticsearch:6.4.3
+    container_name: master
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./config/esmaster.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+  es1:
+    image: elasticsearch:6.4.3
+    container_name: es1
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "8200:9200"
+      - "8210:9300"
+    volumes:
+      - ./config/escluster1.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+  es2:
+    image: elasticsearch:6.4.3
+    container_name: es2
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "8220:9200"
+      - "8230:9300"
+    volumes:
+      - ./config/escluster2.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+networks:
+  net-es:

@@ -1,0 +1,149 @@
+SUSE环境下安装docker(root权限)
+
+添加zypper系统源
+#zypper addrepo -f http://download.opensuse.org/distribution/11.2/repo/oss/ pub-openSUSE-42.1-Oss
+#zypper addrepo -f http://download.opensuse.org/distribution/11.2/repo/non-oss/ pub-openSUSE-42.1-NON-Oss
+zypper addrepo -f http://mirrors.ustc.edu.cn/opensuse/distribution/leap/42.2/repo/non-oss/ USTC-openSUSE-42.1-NON-Oss
+zypper addrepo -f http://mirrors.ustc.edu.cn/opensuse/distribution/leap/42.2/repo/oss/ USTC-openSUSE-42.1-Oss
+
+zypper安转docker
+#zypper in docker
+
+docker服务启动
+#systemctl start docker.service
+
+docker自启动
+#systemctl enable docker.service
+
+添加用户授权至docker用户组
+#/usr/sbin/usermod -a -G docker <username>
+
+# 基本信息查看
+docker version # 查看docker的版本号，包括客户端、服务端、依赖的Go等
+docker info # 查看系统(docker)层面信息，包括管理的images, containers数等
+docker pull centos #下载
+docker images [ centos ] #查看
+docker run -i -t centos /bin/bash
+docker inspect <imageName> #查看镜像详细信息
+
+#从Dockerfile创建镜像
+docker build  -t <tag> -f <Dockerfile location> .
+
+#下载CENTOS镜像
+docker pull centos
+
+
+#镜像重命名
+docker tag <IMAGEID> <REPOSITORY>:<TAG>
+
+
+#指定DNS
+sudo docker run --dns 8.8.8.8 --dns 8.8.4.4 --name ubuntu_bash -i -t ubuntu:latest /bin/bash
+
+#创建容器
+docker run -it --privileged -d --restart=always --cap-add SYS_ADMIN --name alpine -p 8130:8080 alpine:yongda /bin/bash
+
+#建立一个CENTOS的容器
+sudo docker run --dns 8.8.8.8 --dns 8.8.4.4 --privileged --cap-add SYS_ADMIN -e container=docker -it --name yongda_centos -p 80:8080  -d  --restart=always centos:yongda /bin/bash
+sudo docker run --privileged --cap-add SYS_ADMIN -e container=docker -it --name yongda_centos_withdb -p 8120:8080 -d  --restart=always centos:yongda /bin/bash
+
+sudo docker run --privileged --cap-add SYS_ADMIN -e container=docker -it --name yongda_centos_db -p 8120:8080 -p 3306:3306 --network=host -d  --restart=always centos:yongda /bin/bash
+
+sudo docker run --privileged --cap-add SYS_ADMIN -e container=docker -it --name yongda_centos_withip --network=bridge_network --ip=192.168.0.200 -p 8120:8080 --expose 8120 -d  --restart=always centos:yongda /bin/bash
+
+sudo docker run --privileged --cap-add SYS_ADMIN --net="host" -e container=docker -it --name yongda_centos_test -p 8090:8080  -d  --restart=always centos:yongda /bin/bash
+sudo docker run --privileged --cap-add SYS_ADMIN --net=none -e container=docker -it --name yongda_centos_nonet -p 8100:8080  -d  --restart=always centos:yongda /bin/bash
+sudo docker run --privileged --cap-add SYS_ADMIN --net=bridge -e container=docker -it --name yongda_centos_bridge -p 8110:8080  -d  --restart=always centos:yongda /bin/bash
+
+docker run --privileged --cap-add SYS_ADMIN -e container=docker --network=host -it --name master_prd -p 8250:9200 -p 8260:9300 -v /home/app/software/docker/dockerCompose/elasticsearch/prd/config/esmaster.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /home/app/software/docker/dockerCompose/elasticsearch/prd/config/esdata:/usr/share/elasticsearch/data -d  --restart=always elasticsearch:ik_6.4.3 /bin/bash
+
+/*
+--privileged 指定容器是否是特权容器。这里开启特权模式。
+
+--cap-add SYS_ADMIN 添加系统的权限。不然，系统很多功能都用不了的。
+
+-e container=docker 设置容器的类型。
+
+-it 启动互动模式。
+
+/usr/sbin/init  初始容器里的CENTOS。
+
+以上的参数是必需的。不然，建立的CENTOS容器不能正常使用和互动。
+
+如果没有-it参数，容器会不停启动。
+
+如果没有初始化和特权等等的开关，就不能使用systemctl。所以，以上的开关和设置是一样不能少的。
+
+--memory="300m" --memory-swap="1g" 的含义为：
+容器可以使用 300M 的物理内存，并且可以使用 700M(1G -300M) 的 swap
+*/
+
+#桥接模式创建network
+docker network create -d bridge bridge_network
+
+#创建subnet
+docker network create \
+  --driver=bridge \
+  --subnet=172.28.0.0/16 \
+  --ip-range=172.28.5.0/24 \
+  --gateway=172.28.5.254 \
+  br0
+
+docker network create --driver=bridge --subnet=192.168.0.0/16 br0
+
+#进入容器
+docker exec -it yongda_centos /bin/bash
+
+1.停止所有的container，这样才能够删除其中的images：
+
+docker stop $(docker ps -a -q)
+
+如果想要删除所有container的话再加一个指令：
+
+docker rm $(docker ps -a -q)
+
+2.查看当前有些什么images
+
+docker images
+
+3.删除images，通过image的id来指定删除谁
+
+docker rmi <image id>
+
+想要删除untagged images，也就是那些id为<None>的image的话可以用
+
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+
+要删除全部image的话
+
+docker rmi $(docker images -q)
+
+#查看容器
+docker ps
+
+#修改镜像存放目录
+cd /etc/systemd/system/multi-user.target.wants
+vim docker.service
+
+ExecStart=/usr/bin/dockerd --graph=/mnt/device/docker --storage-driver=overlay --registry-mirror=https://jxus37ad.mirror.aliyuncs.com
+--graph=/data/docker：docker新的存储位置
+--storage-driver=overlay ： 当前docker所使用的存储驱动
+
+#重新加载service配置
+systemctl daemon-reload
+systemctl restart docker
+
+
+#上传文件
+docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+
+docker cp /home/app/docker/gateway 073486525e1a:/home/apps/gateway/server
+
+#镜像导出
+docker save -o /home/app/docker/centos_yongda.tar centos:latest
+
+#镜像导入
+docker load --input centos_yongda.tar
+
+#容器保存为镜像
+docker commit -m "change somth" -a "somebody info" container_id(docker ps -a获取id) <images name>

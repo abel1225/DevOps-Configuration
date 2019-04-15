@@ -1,0 +1,61 @@
+version: "2"
+services:
+  master:
+    image: elasticsearch:ik_6.4.3
+    container_name: master_prd
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "8250:9200"
+      - "8260:9300"
+    volumes:
+      - ./config/esmaster.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+  master1:
+    image: elasticsearch:ik_6.4.3
+    container_name: master1_prd
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "192.168.20.17:9200:9200"
+      - "192.168.20.17:9300:9300"
+    volumes:
+      - ./config/esmaster1.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+  escluster1:
+    image: elasticsearch:ik_6.4.3
+    container_name: escluster1_prd
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "192.168.20.17:10200:9200"
+      - "192.168.20.17:10300:9300"
+    volumes:
+      - ./config/escluster1.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - net-es
+networks:
+  net-es:

@@ -1,0 +1,9 @@
+
+ot@docker docker_demo]# cat Dockerfile 
+# base image
+FROM centos
+# MAINTAINER
+MAINTAINER able <able.li@ibreakingpoint.com>
+ADD  /usr/local/src
+
+EXPOSE 9200

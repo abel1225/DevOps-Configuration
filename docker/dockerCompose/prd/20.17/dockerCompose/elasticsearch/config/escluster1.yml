@@ -1,0 +1,23 @@
+
+cluster.name: elasticsearch_prd
+node.name: node_17_2
+node.master: true
+node.data: true
+
+network.host: 0.0.0.0
+network.bind_host: 0.0.0.0
+http.port: 10200
+network.publish_host: 192.168.20.17
+transport.tcp.port: 10300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+indices.fielddata.cache.size: 30%
+
+discovery.zen.ping.unicast.hosts: ["192.168.0.178:8260", "192.168.20.17:10300", "192.168.20.17:9300"]
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping_timeout: 5s
+
+bootstrap.memory_lock: true
+action.destructive_requires_name: true
+
