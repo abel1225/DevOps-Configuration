@@ -1,0 +1,6 @@
+待处理
+
+vehicletype
+vehiclebrand
+
+echo "/dev/sdc1 /mnt/device ext4 defaults 0 0" >> /etc/fstab

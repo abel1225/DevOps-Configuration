@@ -1,0 +1,103 @@
+{
+	"order": 10,
+	"index_patterns": ["maintenance*"],
+	"settings": {
+		"index": {
+			"codec": "best_compression",
+			"number_of_shards": "3",
+			"number_of_replicas": "1",
+			"analysis": {
+               "analyzer": {
+				  "ik_max_word": {
+                     "tokenizer": "ik_max_word"
+                  }
+               }
+            }
+		}
+	},
+	"mappings": {
+		"doc": {
+			"properties": {
+				"@timestamp": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||dateOptionalTime",
+					"doc_values": true
+				},
+				"createdts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"modifiedts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"pk": {
+					"type": "long"
+				},
+				"maintenancecode": {
+					"type": "keyword"
+				},
+				"manualcode": {
+					"type": "keyword"
+				},
+				"manualcodedescription": {
+					"type": "keyword"
+				},
+				"manualcategory": {
+					"type": "keyword"
+				},
+				"deleteflag": {
+					"type": "boolean"
+				},
+				"pricereferencematerial": {
+                    "type": "keyword"
+				},
+				"pricecode": {
+					"type": "keyword"
+				},
+				"price": {
+					"type": "keyword"
+				},
+				"saleorganization": {
+					"type": "keyword"
+				},
+				"conditionvalidstartdate": {
+					"type": "keyword"
+				},
+				"conditionvalidenddate": {
+					"type": "keyword"
+				},
+				"conditioncurrency": {
+					"type": "keyword"
+				},
+				"materialcode": {
+					"type": "keyword"
+				},
+				"conditioncode": {
+					"type": "keyword"
+				},
+				"conditiontype": {
+					"type": "keyword"
+				},
+				"hourcode": {
+					"type": "keyword"
+				},
+				"planmanualtime": {
+					"type": "keyword"
+				},
+				"manualtype": {
+					"type": "keyword"
+				},
+				"manualtargettimeunit": {
+					"type": "keyword"
+				},
+				"ydstorepk": {
+					"type": "long"
+				},
+				"storeuid": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

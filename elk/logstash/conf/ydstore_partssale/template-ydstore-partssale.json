@@ -1,0 +1,114 @@
+{
+	"order": 10,
+	"index_patterns": ["partssale*"],
+	"settings": {
+		"index": {
+			"codec": "best_compression",
+			"number_of_shards": "3",
+			"number_of_replicas": "1",
+			"analysis": {
+               "analyzer": {
+                  "comma": {
+                     "pattern": ",",
+                     "type": "pattern"
+                  },
+				  "ik_max_word": {
+                     "tokenizer": "ik_max_word"
+                  }
+               }
+            }
+		}
+	},
+	"mappings": {
+		"doc": {
+			"properties": {
+				"@timestamp": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||dateOptionalTime",
+					"doc_values": true
+				},
+				"createdts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"modifiedts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"pricecreatedts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"pricemodifiedts": {
+					"type": "date",
+					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSSSSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				},
+				"pk": {
+					"type": "long"
+				},
+				"name": {
+					"type": "text",
+					"analyzer": "ik_max_word"
+				},
+				"code": {
+					"type": "keyword"
+				},
+				"name": {
+					"type": "text",
+					"analyzer": "ik_max_word"
+				},
+				"manucode": {
+					"type": "keyword"
+				},
+				"baseunit": {
+					"type": "keyword"
+				},
+				"pricequantity": {
+					"type": "byte"
+				},
+				"approvalstatus": {
+					"type": "long"
+				},
+				"statuscode": {
+					"type": "keyword"
+				},
+				"pricepk": {
+					"type": "long"
+				},
+				"pricecode": {
+					"type": "keyword"
+				},
+				"priceunit": {
+					"type": "keyword"
+				},
+				"pricecondition": {
+					"type": "keyword"
+				},
+				"pricestartdate": {
+					"type": "keyword"
+				},
+				"priceenddate": {
+					"type": "keyword"
+				},
+				"price": {
+                    "type": "keyword"
+				},
+				"ydstorepk": {
+					"type": "long"
+				},
+				"categorylist": {
+					"type": "text",
+					"analyzer": "comma"
+				},
+				"brandcodelist": {
+					"type": "text",
+					"analyzer": "comma"
+				},
+				"brandnamelist": {
+					"type": "text",
+					"analyzer": "comma"
+				}
+			}
+		}
+	}
+}
