@@ -31,7 +31,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $SERVER_NAME ..."
-      nohup java -jar $APP_HOME$SERVER_NAME >/home/ec2-user/wechat/apps/logs/aegean_miniprogram_server.log 2>&1 &
+      nohup java -jar $APP_HOME$SERVER_NAME --spring.profiles.active=default > /home/ec2-user/wechat/apps/logs/aegean_miniprogram_server.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
