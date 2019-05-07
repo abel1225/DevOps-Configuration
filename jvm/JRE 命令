@@ -1,0 +1,3 @@
+java执行jar文件
+java -jar xxx.jar --spring.profiles.active=default -Xdebug
+
