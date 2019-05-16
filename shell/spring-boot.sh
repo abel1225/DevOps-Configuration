@@ -13,7 +13,7 @@ JAVA_OPTS="-ms16m -mx64m -Xmn32m -Djava.awt.headless=true"
 psid=0
 
 checkpid() {
-   #javaps=`$JAVA_HOME/bin/jps -l | grep $SERVER_NAME`
+   #javaps=`$JAVA_HOME/bin/jps -l | grep $APP_HOME$SERVER_NAME`
    javaps=`pgrep -f '$SERVER_NAME.*$ACTIVE_PROFILE'`
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
