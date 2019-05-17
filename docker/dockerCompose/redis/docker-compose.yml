@@ -1,0 +1,23 @@
+version: "2"
+services:
+  master:
+    image: redis:latest
+    container_name: redis_node
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "6379:6379"
+    #command: redis-server -c ./redis.conf --requirepass redis#12345 --notify-keyspace-events Eglx
+    command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
+    #command: redis-server /Users/lizhen/Documents/docker/redis/redis.conf
+    networks:
+     - net-redis
+networks:
+  net-redis:
