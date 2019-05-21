@@ -1,0 +1,14 @@
+添加key: set [key] [value] [EX t(seconds)]
+获取value: get [key]
+
+查询key: scan 0 MATCH *11*
+
+查看配置命令: info
+更改配置: config set [config] [configvalue]
+推出: quit
+
+hashset查询:
+    hget [key] [field]
+    hgetall [key]
+
+
