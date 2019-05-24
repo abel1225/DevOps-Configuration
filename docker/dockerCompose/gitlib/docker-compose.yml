@@ -1,0 +1,35 @@
+version: "2"
+services:
+  gitlib:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlib
+    restart: unless-stopped
+    privileged: true
+    hostname: gitlib
+    environment:
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      TZ: "Asia/Shanghai"
+      GITLIB_OMNBUS_CONFIG: |
+        external_url 'http://gitlibhost'
+        gitlib_rails['time_zone'] = 'Asia/Shanghai'
+        gitlib_rails['smtp_enable'] = true
+        gitlib_rails['smtp_address'] = 'smtp.163.com'
+        gitlib_rails['smtp_port'] = 465
+        gitlib_rails['smtp_user_name'] = 'abel0130@163.com'
+        gitlib_rails['smtp_password'] = 'zhenxin2009'
+        gitlib_rails['smtp_domain'] = '163.com'
+        gitlib_rails['smtp_authentication'] = 'login'
+        gitlib_rails['smtp_enable_starttls_auto'] = true
+        gitlib_rails['smtp_tls'] = true
+        gitlib_rails['gitlib_email_from'] = 'abel0130@163.com'
+        gitlib_rails['gitlib_ssh_host'] = 'gitlibhost'
+        gitlib_rails['gitlib_shell_ssh_port'] = 222
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "222:22"
+    volumes:
+      - /Users/lizhen/git/gitlib/config:/etc/gitlib
+      - /Users/lizhen/git/gitlib/data:/etc/gitlib
+      - /Users/lizhen/git/gitlib/logs:/etc/gitlib
