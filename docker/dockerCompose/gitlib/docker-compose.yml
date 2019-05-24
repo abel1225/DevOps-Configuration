@@ -10,7 +10,7 @@ services:
 #      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       TZ: "Asia/Shanghai"
       GITLIB_OMNBUS_CONFIG: |
-        external_url 'http://gitlibhost'
+        external_url 'http://127.0.0.1'
         gitlib_rails['time_zone'] = 'Asia/Shanghai'
         gitlib_rails['smtp_enable'] = true
         gitlib_rails['smtp_address'] = 'smtp.163.com'
@@ -22,7 +22,7 @@ services:
         gitlib_rails['smtp_enable_starttls_auto'] = true
         gitlib_rails['smtp_tls'] = true
         gitlib_rails['gitlib_email_from'] = 'abel0130@163.com'
-        gitlib_rails['gitlib_ssh_host'] = 'gitlibhost'
+        gitlib_rails['gitlib_ssh_host'] = '127.0.0.1'
         gitlib_rails['gitlib_shell_ssh_port'] = 222
 
     ports:
