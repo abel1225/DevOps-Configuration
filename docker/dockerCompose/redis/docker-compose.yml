@@ -14,9 +14,9 @@ services:
         hard: 65536
     ports:
       - "6379:6379"
-    #command: redis-server -c ./redis.conf --requirepass redis#12345 --notify-keyspace-events Eglx
+    #command: redis-server -c ./redis-4.0.conf --requirepass redis#12345 --notify-keyspace-events Eglx
     command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
-    #command: redis-server /Users/lizhen/Documents/docker/redis/redis.conf
+    #command: redis-server /Users/lizhen/Documents/docker/redis/redis-4.0.conf
     networks:
      - net-redis
 networks:
