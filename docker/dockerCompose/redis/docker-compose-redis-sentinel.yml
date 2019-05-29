@@ -1,0 +1,91 @@
+version: '2'
+services:
+  repl-0:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6380:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--replica-announce-ip","192.168.174.129","--replica-announce-port","6380"]
+
+  repl-1:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6381:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--slaveof","repl-0","6379","--replica-announce-ip","192.168.174.129","--replica-announce-port","6381"]
+
+  repl-2:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6382:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--slaveof","repl-0","6379","--replica-announce-ip","192.168.174.129","--replica-announce-port","6382"]
+
+  repl-3:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6383:6379
+    networks:
+      - sentinel
+    ports:
+      - 6383:6379
+    command: ["redis-server","--slaveof","repl-2","6379","--replica-announce-ip","192.168.174.129","--replica-announce-port","6383"]
+
+  sentinel-1:
+    build: ./build
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - sentinel
+    ports:
+      - 26380:26379
+    command: ["redis-server","/data/sentinel.conf","--sentinel","announce-ip","192.168.174.129","--sentinel","announce-port" , "26380"]
+
+  sentinel-2:
+    build: ./build
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - sentinel
+    ports:
+      - 26381:26379
+    command: ["redis-server","/data/sentinel.conf","--sentinel","announce-ip","192.168.174.129","--sentinel","announce-port" , "26381"]
+
+  sentinel-3:
+    build: ./build
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - sentinel
+    ports:
+      - 26382:26379
+    command: ["redis-server","/data/sentinel.conf","--sentinel","announce-ip","192.168.174.129","--sentinel","announce-port" , "26382"]
+
+networks:
+  sentinel:
+    driver: bridge

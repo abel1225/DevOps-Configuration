@@ -1,0 +1,62 @@
+version: '2'
+services:
+  cluster-a1:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6371.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
+  cluster-a2:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6372.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
+  cluster-b1:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6381.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
+  cluster-b2:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6382.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
+  cluster-c1:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6391.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
+  cluster-c2:
+    image: redis:5.0-rc-alpine
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./conf.d/cluster-6392.conf:/data/redis.conf"
+    network_mode: host
+    command: ["redis-server","/data/redis.conf"]
+
