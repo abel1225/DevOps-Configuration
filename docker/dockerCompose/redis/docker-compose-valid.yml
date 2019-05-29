@@ -1,0 +1,53 @@
+version: '2'
+services:
+  repl-0:
+    image: redis:5.0.4-alpine
+    restart: always
+    # volumes:
+    #   - "/etc/timezone:/etc/timezone:ro"
+    #   - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6380:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--replica-announce-ip", "127.0.0.1","--replica-announce-port","6380"]
+
+  repl-1:
+    image: redis:5.0.4-alpine
+    restart: always
+    # volumes:
+    #   - "/etc/timezone:/etc/timezone:ro"
+    #   - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6381:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--replica-announce-ip", "127.0.0.1","--replica-announce-port","6381"]
+
+  slave-0:
+    image: redis:5.0.4-alpine
+    restart: always
+    # volumes:
+    #   - "/etc/timezone:/etc/timezone:ro"
+    #   - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6390:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--slaveof","repl-0","6379","--replica-announce-ip", "127.0.0.1","--replica-announce-port","6390"]
+
+  slave-1:
+    image: redis:5.0.4-alpine
+    restart: always
+    # volumes:
+    #   - "/etc/timezone:/etc/timezone:ro"
+    #   - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 6391:6379
+    networks:
+      - sentinel
+    command: ["redis-server","--slaveof","repl-1","6379","--replica-announce-ip", "127.0.0.1","--replica-announce-port","6391"]
+
+networks:
+  sentinel:
+    driver: bridge
