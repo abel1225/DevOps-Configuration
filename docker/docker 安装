@@ -147,3 +147,8 @@ docker load --input centos_yongda.tar
 
 #容器保存为镜像
 docker commit -m "change somth" -a "somebody info" container_id(docker ps -a获取id) <images name>
+
+
+docker自启动
+systemctl enable docker
+systemctl start docker
