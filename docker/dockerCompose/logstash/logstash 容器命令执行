@@ -1,0 +1,1 @@
+docker run --rm -v $PWD/logs:/usr/share/logstash/logs -v $PWD/config:/usr/share/logstash/config logstash:6.7.0 logstash -f /usr/share/logstash/config/logstash.conf
