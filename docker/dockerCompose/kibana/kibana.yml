@@ -1,0 +1,9 @@
+
+server.name: kibana
+server.host: "0.0.0.0"
+server.basePath: "/kibana"
+server.rewriteBasePath: true
+elasticsearch.hosts: [ "http://10.21.3.75:9200" ]
+#elasticsearch.hosts: [ "http://192.168.20.29:9200", "http://192.168.20.30:9200", "http://192.168.20.34:9200" ]
+xpack.monitoring.ui.container.elasticsearch.enabled: true
+
