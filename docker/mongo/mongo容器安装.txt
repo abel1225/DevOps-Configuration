@@ -1,2 +1,2 @@
 构建mongo容器($PWD为本地目录)
-docker run -p 27017:27017 -v $PWD/db:/data/db -d mongo:3.2 --name mongodb
+docker run --name mongodb -p 27017:27017 -v $PWD/db:/data/db -d mongo:3.4
