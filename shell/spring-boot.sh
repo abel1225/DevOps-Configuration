@@ -15,6 +15,7 @@ psid=0
 checkpid() {
    #javaps=`$JAVA_HOME/bin/jps -l | grep $APP_HOME$SERVER_NAME`
    javaps=`pgrep -f '$SERVER_NAME.*$ACTIVE_PROFILE'`
+   #javaps=$(ps -ef | grep '$SERVER_NAME' | grep '$ACTIVE_PROFILE' | grep -v grep | awk '{print $2}')
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
    else
