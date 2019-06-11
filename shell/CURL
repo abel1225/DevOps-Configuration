@@ -1,0 +1,1 @@
+curl -H "Content-Type:application/json" -X POST -d '{"order":"B219060030","user":"YD9132","userName":"%e5%8d%ab%e4%ba%91%e6%9d%b0"}' 'http://192.168.0.178:8270/dbm/lock/3101'

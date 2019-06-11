@@ -1,6 +1,6 @@
 {
 	"order": 11,
-	"index_patterns": ["ydstore*"],
+	"index_patterns": ["temp*"],
 	"settings": {
 		"index": {
 			"codec": "best_compression",
@@ -8,6 +8,10 @@
 			"number_of_replicas": "1",
 			"analysis": {
 				"analyzer": {
+					"comma": {
+						"pattern": ",",
+						"type": "pattern"
+					},
 					"ik_max_word": {
 						"tokenizer": "ik_max_word"
 					}
@@ -34,12 +38,10 @@
 					"type": "keyword"
 				},
 				"createdts": {
-					"type": "date",
-					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+					"type": "date"
 				},
 				"modifiedts": {
-					"type": "date",
-					"format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'||yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+					"type": "date"
 				},
 				"oacoding": {
 					"type": "keyword"

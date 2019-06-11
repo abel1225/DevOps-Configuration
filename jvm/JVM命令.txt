@@ -75,6 +75,8 @@ jmap:  java内存映射(可生成快照，快照可使用mat查看[dominator-tre
 jconsole:  查看堆内存，内存占用，线程详情等信息
 visualVM: 可视化监控工具
 
+jstack: 查看java堆栈信息
+
 java输出汇编指令
 -server -Xcomp -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly
 -XX:CompileCommand=compileronly,*class.method
