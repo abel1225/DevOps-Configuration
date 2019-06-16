@@ -24,7 +24,9 @@ mkdir -p /usr/local/redis/bin
 
 mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-dump redis-cli redis-server /usr/local/redis/bin
 
-8 启动时并指定配置文件：./redis-server /usr/local/redis/etc/redis.conf（注意要使用后台启动，所以修改redis.conf里的 daemonize 改为yes)
+8 启动时并指定配置文件：
+./redis-server /usr/local/redis/etc/redis.conf（注意要使用后台启动，所以修改redis.conf里的 daemonize 改为yes)
+redis-server --daemonize yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx
 
 9 验证启动是否成功：
 ps -ef | grep redis 查看是否有redis服务 或者 查看端口：netstat -tunpl | grep 6379
