@@ -1,0 +1,10 @@
+Zypper源
+
+zypper addrepo -f http://mirrors.aliyun.com/opensuse/update/leap/42.1/oss  openSUSE-42.1-Update-Oss
+zypper addrepo -f http://mirrors.aliyun.com/opensuse/update/leap/42.1/non-oss/ openSUSE-42.1-Update-Non-Oss
+zypper addrepo -f http://mirrors.aliyun.com/opensuse/distribution/leap/42.1/repo/oss/ openSUSE-42.1-Oss
+zypper addrepo -f http://mirrors.aliyun.com/opensuse/distribution/leap/42.1/repo/non-oss/  openSUSE-42.1-Non-Oss
+zypper addrepo -f http://mirrors.aliyun.com/packman/openSUSE_Leap_42.1/ aliyun-packman
+
+zypper addrepo -f http://mirrors.163.com/openSUSE/distribution/openSUSE-stable/repo/non-oss/ 163openSUSE-stable-non-oss
+zypper addrepo -f http://mirrors.163.com/openSUSE/distribution/openSUSE-stable/repo/oss/ 163openSUSE-stable-oss
