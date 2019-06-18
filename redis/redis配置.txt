@@ -22,7 +22,7 @@ echo -e "\nnet.core.somaxconn=1024" >> /etc/sysctl.conf
 
 WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
 echo -e "\nvm.overcommit_memory=1" >> /etc/sysctl.conf  或 vi /etcsysctl.conf , 然后reboot重启机器 或 sysctl -p
-echo 1 > /proc/sys/vm/overcommit_memory  不需要启机器就生效
+echo 1 > /proc/sys/vm/overcommit_memory  不需要启机器就生效(临时生效)
 
 3.docker 访问redis服务命令
 docker exec -it redis_node_178_1 redis-cli -a redis#12345
