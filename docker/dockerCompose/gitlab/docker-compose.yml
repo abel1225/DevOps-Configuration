@@ -30,6 +30,6 @@ services:
       - "443:443"
       - "222:22"
     volumes:
-      - /Users/lizhen/git/gitlib/config:/etc/gitlib
-      - /Users/lizhen/git/gitlib/data:/etc/gitlib
-      - /Users/lizhen/git/gitlib/logs:/etc/gitlib
+      - ${pwd}/gitlib/config:/etc/gitlib
+      - ${pwd}/gitlib/data:/etc/gitlib
+      - ${pwd}/gitlib/logs:/etc/gitlib
