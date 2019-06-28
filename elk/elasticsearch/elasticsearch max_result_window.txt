@@ -1,0 +1,1 @@
+curl -XPUT -H "Content-Type:application/json" http://192.168.20.29:9200/index/_settings -d '{ "index" : { "max_result_window" : 500000}}'
