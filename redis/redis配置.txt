@@ -31,7 +31,7 @@ docker exec -it redis_node_178_1 redis-cli -a redis#12345
 redis-cli登录之后
 使用config set [paramater] [value] 设置参数内容
 
-5.restfull (依赖libevent和libevent-devel),相关配置查看webdis.json
+5.restful (依赖libevent和libevent-devel),相关配置查看webdis.json
 git clone git://github.com/nicolasff/webdis.git
 cd webdis
 make
