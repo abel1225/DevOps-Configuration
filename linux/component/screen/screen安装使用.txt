@@ -1,0 +1,18 @@
+1.安装
+大部分linux发行版包管理器默认自带screen
+yum install screen
+
+2.创建名称为 first 的screen会话
+screen -S first
+创建名称为 first 但不希望自动连上的screen会话
+screen -dmS first
+3.从当前会话脱离 ctrl + A + D
+
+4.列出会话
+screen -ls
+
+5.连上指定会话
+screen -r [会话名|会话ID|会话ID.会话名]
+
+6.终止会话
+screen -X -S [会话名|会话ID] quit
