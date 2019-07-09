@@ -1,11 +1,11 @@
 #!/bin/bash
 JAVA_HOME="/usr/java/jdk1.8.0_161"
 
-RUNNING_USER=ec2-user
+RUNNING_USER=root
 
-APP_HOME=/home/ec2-user/wechat/apps/aegeanminiprogram/server/
+APP_HOME=/home/app/
 
-SERVER_NAME=aegeanMiniprogram.jar
+SERVER_NAME=app.jar
 ACTIVE_PROFILE=default
 
 JAVA_OPTS="-ms16m -mx64m -Xmn32m -Djava.awt.headless=true"
@@ -14,8 +14,8 @@ psid=0
 
 checkpid() {
    #javaps=`$JAVA_HOME/bin/jps -l | grep $APP_HOME$SERVER_NAME`
-   javaps=`pgrep -f '$SERVER_NAME.*$ACTIVE_PROFILE'`
-   #javaps=$(ps -ef | grep '$SERVER_NAME' | grep '$ACTIVE_PROFILE' | grep -v grep | awk '{print $2}')
+   javaps=`pgrep -f $APP_HOME$SERVER_NAME`
+   #javaps=$(ps -ef | grep $APP_HOME$SERVER_NAME | grep -v grep | awk '{print $2}')
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
    else
@@ -33,7 +33,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $SERVER_NAME ..."
-      nohup java -jar $APP_HOME$SERVER_NAME --spring.profiles.active=$ACTIVE_PROFILE > /home/ec2-user/wechat/apps/logs/aegean_miniprogram_server.log 2>&1 &
+      nohup java -jar $APP_HOME$SERVER_NAME --spring.profiles.active=$ACTIVE_PROFILE > /home/app.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
