@@ -33,7 +33,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $SERVER_NAME ..."
-      nohup java -jar $APP_HOME$SERVER_NAME $JAVA_OPTS --spring.profiles.active=$ACTIVE_PROFILE > /home/app.log 2>&1 &
+      nohup java -jar $JAVA_OPTS $APP_HOME$SERVER_NAME --spring.profiles.active=$ACTIVE_PROFILE > /home/app.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
