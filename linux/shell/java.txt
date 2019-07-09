@@ -1,4 +1,4 @@
-java -jar -server -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/dump/heap/
+java -server -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/dump/heap/
  -Djava.io.tmpdir=/data/tmp/
  -Dserver.port=8103
  -Dcom.sun.management.jmxremote
@@ -29,4 +29,4 @@ java -jar -server -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/dump/he
  -Dfile.encoding=UTF-8
  -Dlog.path=/data/logs/
  -Dspring.profiles.active=online
- /data/deploy/app.jar
+ -jar  /data/deploy/app.jar
