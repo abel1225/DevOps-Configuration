@@ -3,16 +3,16 @@ JAVA_HOME="/usr/java/jdk1.8.0_161"
 
 RUNNING_USER=root
 
-APP_HOME=/home/yongda/apps/server/
+APP_HOME=/home/apps/
 
-SERVER_NAME=gateway-dbdata-provider.jar
+SERVER_NAME=gateway-provider.jar
 
 JAVA_OPTS="-ms16m -mx64m -Xmn32m -Djava.awt.headless=true"
 
 psid=0
 
 checkpid() {
-   javaps=`$JAVA_HOME/bin/jps -l | grep $SERVER_NAME`
+   javaps=`$JAVA_HOME/bin/jps -l | grep $APP_HOME$SERVER_NAME`
  
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
@@ -31,7 +31,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $SERVER_NAME ..."
-      nohup java -jar $APP_HOME$SERVER_NAME >/home/yongda/apps/logs/gateway_dbdata_provider.log 2>&1 &
+      nohup java -jar $APP_HOME$SERVER_NAME $JAVA_OPTS >/home/apps/logs/gateway.log 2>&1 &
       checkpid
       if [ $psid -ne 0 ]; then
          echo "(pid=$psid) [OK]"
