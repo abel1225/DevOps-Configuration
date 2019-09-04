@@ -125,9 +125,13 @@ docker ps
 cd /etc/systemd/system/multi-user.target.wants
 vim docker.service
 
-ExecStart=/usr/bin/dockerd --graph=/mnt/device/docker --storage-driver=overlay --registry-mirror=https://jxus37ad.mirror.aliyuncs.com
+ExecStart=/usr/bin/dockerd \
+    --graph=/data/docker \
+    --storage-driver=overlay2 \
+    --registry-mirror=https://jxus37ad.mirror.aliyuncs.com
+
 --graph=/data/docker：docker新的存储位置
---storage-driver=overlay ： 当前docker所使用的存储驱动
+--storage-driver=overlay2 ： 当前docker所使用的存储驱动
 
 #重新加载service配置
 systemctl daemon-reload
