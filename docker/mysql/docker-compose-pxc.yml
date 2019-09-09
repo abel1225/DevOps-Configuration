@@ -1,0 +1,69 @@
+version: "2"
+services:
+  pxc1:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql_pxc1
+    volumes:
+      - /data/mysql/pxc1/:/var/lib/mysql/
+#      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - pxc
+    ulimits:
+      nproc: 65535
+    hostname: mysql_pxc1
+    mem_limit: 1g
+    restart: always
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      CLUSTER_NAME: mysql_pxc
+      XTRABACKUP_PASSWORD: root
+    ports:
+      - "3316:3306"
+  pxc2:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql_pxc2
+    volumes:
+      - /data/mysql/pxc2/:/var/lib/mysql/
+    networks:
+      - pxc
+    ulimits:
+      nproc: 65535
+    hostname: mysql_pxc2
+    mem_limit: 1g
+    restart: always
+    privileged: true
+    depends_on:
+      - pxc1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      CLUSTER_NAME: mysql_pxc
+      XTRABACKUP_PASSWORD: root
+      CLUSTER_JOIN: mysql_pxc1
+    ports:
+      - "3317:3306"
+  pxc3:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql_pxc3
+    volumes:
+      - /data/mysql/pxc3/:/var/lib/mysql/
+    networks:
+      - pxc
+    ulimits:
+      nproc: 65535
+    hostname: mysql_pxc3
+    mem_limit: 1g
+    restart: always
+    privileged: true
+    depends_on:
+      - pxc1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      CLUSTER_NAME: mysql_pxc
+      XTRABACKUP_PASSWORD: root
+      CLUSTER_JOIN: mysql_pxc2
+    ports:
+      - "3318:3306"
+networks:
+  pxc:
+    driver: bridge
