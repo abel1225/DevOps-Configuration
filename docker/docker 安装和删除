@@ -26,6 +26,19 @@ docker images [ centos ] #查看
 docker run -i -t centos /bin/bash
 docker inspect <imageName> #查看镜像详细信息
 
+#docker删除
+
+yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+————————————————
+
+
 #从Dockerfile创建镜像
 docker build  -t <tag> -f <Dockerfile location> .
 
