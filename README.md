@@ -22,7 +22,7 @@
 13. nginx
 14. redis
 15. rocketMq  
-    1. docker版本配置来源 [here](https://github.com/abel1225/rocketmq-docker)
+    1. docker版本配置来源 [here](https://github.com/apache/rocketmq-docker)
 16. zk
  
 
