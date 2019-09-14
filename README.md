@@ -9,7 +9,7 @@
 ## 目录结构  
 1. docker  
    1. docker-compose配置文件版本说明
-      1. version "3" 添加command 多命令行支持
+      1. version "3" 添加command 多命令行支持[refer to](https://docs.docker.com/ee/)
          ```
          command:
             - /bin/bash
