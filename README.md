@@ -8,6 +8,16 @@
 
 ## 目录结构  
 1. docker  
+   1. docker-compose配置文件版本说明
+      1. version "3" 添加command 多命令行支持
+         ```
+         command:
+            - /bin/bash
+            - -c
+            - |
+              cd ~/tomcat/bin/
+              startup.sh
+         ```
 2. elk
 3. git
 4. gitlib
