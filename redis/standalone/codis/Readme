@@ -1,0 +1,2 @@
+生成codis配置文件
+./bin/codis-dashboard –default-config | tee dashboard.toml

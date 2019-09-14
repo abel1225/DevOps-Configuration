@@ -8,7 +8,7 @@ APP_HOME=/home/app/
 SERVER_NAME=app.jar
 ACTIVE_PROFILE=default
 
-JAVA_OPTS="-ms16m -mx64m -Xmn32m -Djava.awt.headless=true"
+JAVA_OPTS="-Xms64m -Xmx64m -Xmn32m -Djava.awt.headless=true"
 
 psid=0
 

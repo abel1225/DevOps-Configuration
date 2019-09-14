@@ -1,0 +1,73 @@
+version: "2"
+services:
+  master:
+    image: mysql:5.7.47
+    volumes:
+      - /data/mysql/master/:/var/lib/mysql/
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mysql:
+          ipv4_address: 172.18.0.2
+    ulimits:
+      nproc: 65535
+    hostname: mysql_master
+    mem_limit: 1g
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3326:3306"
+  slave1:
+    image: mysql:5.7.47
+    volumes:
+      - /data/mysql/slave1/:/var/lib/mysql/
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mysql:
+          ipv4_address: 172.18.0.3
+    depends_on:
+      - master
+    links:
+      - master
+    ulimits:
+      nproc: 65535
+    hostname: mysql_slave1
+    mem_limit: 1g
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3327:3306"
+  slave2:
+    image: mysql:5.7.47
+    volumes:
+      - /data/mysql/slave2/:/var/lib/mysql/
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mysql:
+          ipv4_address: 172.18.0.4
+    depends_on:
+      - master
+    links:
+      - master
+    ulimits:
+      nproc: 65535
+    hostname: mysql_slave2
+    mem_limit: 1g
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3328:3306"
+#volumes:
+#  - master_data:
+#  - slave1_data:
+#  - slave2_data:
+networks:
+  mysql:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/24
+        gateway: 172.18.0.1

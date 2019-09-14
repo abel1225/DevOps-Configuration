@@ -1,0 +1,12 @@
+1.构建6379节点
+redis-server --daemonize yes --cluster-enabled yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6379
+
+2.构建6380节点
+redis-server --daemonize yes --cluster-enabled yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6380
+
+3.构建6381节点
+redis-server --daemonize yes --cluster-enabled yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6381
+
+4.构建redis集群
+./redis-trib.rb create --replicas 1 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381
+

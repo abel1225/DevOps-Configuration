@@ -1,0 +1,27 @@
+https://docs.docker.com/engine/reference/commandline/cp/
+
+1.docker volume
+#创建卷标(volume_name)
+docker volume create <volume_name>
+
+#查询卷标列表
+docker volume ls
+
+#查看卷标(volume_name)详情
+docker volume inspect <volume_name>
+
+#删除当前未使用卷标
+docker volume prune
+
+#删除卷标
+docker volume rm
+
+2.docker cp
+#文件copy
+docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
+docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+
+
+3.docker network
+#查看网络
+docker network ls

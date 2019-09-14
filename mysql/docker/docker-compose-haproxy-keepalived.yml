@@ -1,0 +1,12 @@
+version: "2"
+services:
+  haproxy-keepalived:
+    build: ~/haproxy-keepalived
+    container_name: haproxy-keepalived
+    volumes:
+      - ~/haproxy-keepalived/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ~/haproxy-keepalived/keepalived.conf:/etc/keepalived/keepalived.conf:ro
+    #      - /etc/localtime:/etc/localtime:ro
+    mem_limit: 1g
+    restart: always
+    privileged: true

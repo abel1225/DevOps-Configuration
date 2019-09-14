@@ -1,0 +1,6 @@
+获取hprof转储文件
+jmap -dump:format=b,file=<dumpfile.hprof> <pid>
+jmap -dump:format=b,file=<dumpfile.dat> <pid>
+
+转储文件分析
+jhat -port 8888 /home/dump.dat

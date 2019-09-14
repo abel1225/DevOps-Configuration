@@ -1,0 +1,27 @@
+1.
+zypper install curl ca-certificates gpg2
+
+2.
+zypper addrepo --gpgcheck --type yum --refresh --check \
+'http://nginx.org/packages/sles/$releasever' nginx-stable
+
+3.
+zypper addrepo --gpgcheck --type yum --refresh --check \
+'http://nginx.org/packages/mainline/sles/$releasever' nginx-mainline
+
+4.
+curl -o /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key
+
+5.
+gpg --with-fingerprint /tmp/nginx_signing.key
+
+6、
+pub 2048R/7BD9BF62 2011-08-19 [expires: 2024-06-14]
+Key fingerprint = 573B FD6B 3D8F BC64 1079 A6AB ABF5 BD82 7BD9 BF62
+uid nginx signing key <signing-key@nginx.com>
+
+7、
+rpmkeys --import /tmp/nginx_signing.key
+
+8.
+zypper install nginx

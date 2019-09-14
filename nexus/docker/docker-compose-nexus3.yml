@@ -1,0 +1,15 @@
+version: '2'
+services:
+  nexus3:
+    image: sonatype/nexus3
+    container_name: nexus3
+    privileged: true
+    restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /Users/lizhen/data/nexus:/nexus-data
+    ports:
+      - 8081:8081

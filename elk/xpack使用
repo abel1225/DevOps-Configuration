@@ -1,0 +1,10 @@
+#开启elasticsearch安全模式
+xpack.security.enabled: true
+
+
+#设置安全密码
+./bin/elasticsearch-setup-passwords interactive
+
+
+default password: elastic
+

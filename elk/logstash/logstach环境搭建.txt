@@ -8,7 +8,7 @@ logstash-plugin install logstash-input-jdbc
 logstash-plugin install logstash-input-beats
 
 #执行conf配置文件
-logstash -f [xxx.conf] --path.data=[/xx/(存放数据路径)]
+logstash -f [xxx.conf] --path.data=[/xx/(存放数据路径)] --path.settings=[/xx/config(p诶之存放路径)]
 
 #后台运行
 nohup logstash -f [xxx.conf] --path.data=[/xx/(存放数据路径)] >/dev/null &;

@@ -1,0 +1,11 @@
+docker run --name=kibana --network back_net-es --link es0 -v $PWD/kibana.yml:/usr/share/kibana/config/kibana.yml -p5602:5601 -d kibana:6.7.0
+
+配置说明
+  --name     容器名
+  --network  网络
+  --link     关联的容器名(单向关联，只能由当前容器访问关联的容器)
+  -v         宿主机与容器文件映射(容器中文件的更新将会同步到宿主机)
+  -p         宿主机与容器的端口映射
+  -d         镜像
+
+

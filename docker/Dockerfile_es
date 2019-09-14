@@ -1,7 +1,0 @@
-# base image
-FROM centos
-# MAINTAINER
-MAINTAINER able <able.li@ibreakingpoint.com>
-ADD  elasticsearch.tar.gz /usr/local/src
-
-EXPOSE 9200

@@ -1,0 +1,5 @@
+#elasticsearch.yml添加elasticsearch-head支持
+http.cors.allow-headers: "Authorization,X-Requested-With,Content-Length,Content-Type"
+
+#访问地址
+http://localhost:9100/?auth_user=elastic&auth_password=elastic

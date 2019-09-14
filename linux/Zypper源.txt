@@ -8,3 +8,27 @@ zypper addrepo -f http://mirrors.aliyun.com/packman/openSUSE_Leap_42.1/ aliyun-p
 
 zypper addrepo -f http://mirrors.163.com/openSUSE/distribution/openSUSE-stable/repo/non-oss/ 163openSUSE-stable-non-oss
 zypper addrepo -f http://mirrors.163.com/openSUSE/distribution/openSUSE-stable/repo/oss/ 163openSUSE-stable-oss
+
+
+http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_12_SP3/
+[devel_tools_scm]
+name=Software configuration management (SLE_12_SP3)
+type=rpm-md
+baseurl=http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_12_SP3/
+gpgcheck=1
+gpgkey=http://download.opensuse.org/repositories/devel:/tools:/scm/SLE_12_SP3/repodata/repomd.xml.key
+enabled=1
+
+
+[elasticsearch-6.x]
+name=Elasticsearch repository for 6.x packages
+baseurl=https://artifacts.elastic.co/packages/6.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+
+
+
+

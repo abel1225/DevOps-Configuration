@@ -1,0 +1,19 @@
+#执行docker-compose-cluster.yml文件生成mysql container
+docker-compose -f ./docker-compose-cluster.yml up
+
+#进入master节点创建主从复制用户
+mysql>create use repl;
+#给repl用户授予slave权限
+#赋予repl replication slave权限，指明repl用户可操作的服务器
+mysql>grant replication slave on *.* to 'repl'@'172.18.0.%' indentify by 'repl';
+#锁库(基于单次会话)
+mysql>flush tables with read lock;
+#查看master状态并记录bin-log文件及position
+mysql>show master status;
+
+#进入slave节点
+#将slave连接至master节点,
+mmysql>change master to master_host='mysql_master',master_port=3306,master_user='repl',master_password='repl',master_log_file='master-bin.000003',master_log_pos=636;
+#启动slave
+mysql>start slave;
+

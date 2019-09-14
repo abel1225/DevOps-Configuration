@@ -7,13 +7,13 @@ APP_HOME=/home/apps/
 
 SERVER_NAME=gateway-provider.jar
 
-JAVA_OPTS="-ms16m -mx64m -Xmn32m -Djava.awt.headless=true"
+JAVA_OPTS="-Xms64m -Xmx64m -Xmn32m -Djava.awt.headless=true"
 
 psid=0
 
 checkpid() {
    javaps=`$JAVA_HOME/bin/jps -l | grep $APP_HOME$SERVER_NAME`
- 
+   javaps=$(pgrep -f $APP_HOME$SERVER_NAME)
    if [ -n "$javaps" ]; then
       psid=`echo $javaps | awk '{print $1}'`
    else

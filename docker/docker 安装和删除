@@ -136,6 +136,8 @@ docker ps
 
 #修改镜像存放目录
 cd /etc/systemd/system/multi-user.target.wants
+</usr/lib/systemd/system/docker.service>
+
 vim docker.service
 
 ExecStart=/usr/bin/dockerd \

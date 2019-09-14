@@ -1,0 +1,14 @@
+1.构建主节点
+redis-server --daemonize yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx
+
+2.构建slave节点
+redis-server --daemonize yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6380 --slaveof [masterip] [masterport]
+
+3.进入节点，构建sentinel
+redis-sentinel ../config/sentinel.conf
+
+建议: sentinel 节点数为奇数个
+
+4.redis集群
+./redis-trib.rb create --replicas 1 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381
+

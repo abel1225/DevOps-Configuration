@@ -1,0 +1,8 @@
+redis-server --daemonize yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6389
+
+redis-server --daemonize yes --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx --port 6390
+
+
+redis-trib.rb  create  --replicas  1  127.0.0.1:6389 127.0.0.1:6390
+说明：
+--replicas 1表示每个主库拥有的从库个数为1

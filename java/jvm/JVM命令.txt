@@ -1,0 +1,84 @@
+JVM命令
+jps:  JVM进程查看 jps -l
+	参数说明
+	-q：只输出进程 ID
+	-m：输出传入 main 方法的参数
+	-l：输出完全的包名，应用主类名，jar的完全路径名
+	-v：输出jvm参数
+	-V：输出通过flag文件传递到JVM中的参数
+	
+jstat:  JVM统计信息监控  jstat -gcutil [pid]
+	参数
+	-F：当正常输出请求不被响应时，强制输出线程栈堆。
+	-l：除线程栈堆外，显示关于锁的附加信息。
+	-m：如果调用本地方法的话，可以显示c/c++的栈堆
+	
+	jstat -options
+		class (类加载器) 
+		compiler (JIT) 
+		gc (GC堆状态) 
+		gccapacity (各区大小) 
+		gccause (最近一次GC统计和原因) 
+		gcnew (新区统计)
+		gcnewcapacity (新区大小)
+		gcold (老区统计)
+		gcoldcapacity (老区大小)
+		gcpermcapacity (永久区大小)
+		gcutil (GC统计汇总)
+		printcompilation (HotSpot编译统计)
+	
+	jstat信息各状态说明：
+		New: 当线程对象创建时存在的状态，此时线程不可能执行；
+		Runnable：当调用thread.start()后，线程变成为Runnable状态。只要得到CPU，就可以执行；
+		Running：线程正在执行；
+		Waiting：执行thread.join()或在锁对象调用obj.wait()等情况就会进该状态，表明线程正处于等待某个资源或条件发生来唤醒自己；
+		Timed_Waiting：执行Thread.sleep(long)、thread.join(long)或obj.wait(long)等就会进该状态，与Waiting的区别在于Timed_Waiting的等待有时间限制；
+		Blocked：如果进入同步方法或同步代码块，没有获取到锁，则会进入该状态；
+		Dead：线程执行完毕，或者抛出了未捕获的异常之后，会进入dead状态，表示该线程结束
+			其次，对于jstack日志，我们要着重关注如下关键信息
+		Deadlock：表示有死锁
+		Waiting on condition：等待某个资源或条件发生来唤醒自己。具体需要结合jstacktrace来分析，比如线程正在sleep，网络读写繁忙而等待
+		Blocked：阻塞
+		Waiting on monitor entry：在等待获取锁
+		in Object.wait()：获取锁后又执行obj.wait()放弃锁
+		对于Waiting on monitor entry 和 in Object.wait()的详细描述：
+			Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。
+			每一个对象都有，也仅有一个 monitor。从下图中可以看出，每个 Monitor在某个时刻，只能被一个线程拥有，
+			该线程就是 "Active Thread"，而其它线程都是 "Waiting Thread"，分别在两个队列 " Entry Set"和 "Wait Set"里面等候。
+			在 "Entry Set"中等待的线程状态是 "Waiting for monitor entry"，而在 "Wait Set"中等待的线程状态是 "in Object.wait()"
+
+jinfo:  java配置信息  jinfo -flags [pid]
+jmap:  java内存映射(可生成快照，快照可使用mat查看[dominator-tree])
+	参数
+	option：选项参数，不可同时使用多个选项参数
+	pid：java进程id，命令ps -ef | grep java获取
+	executable：产生核心dump的java可执行文件
+	core：需要打印配置信息的核心文件
+	remote-hostname-or-ip：远程调试的主机名或ip
+	server-id：可选的唯一id，如果相同的远程主机上运行了多台调试服务器，用此选项参数标识服务器
+	
+	options参数
+	heap : 显示Java堆详细信息
+	histo : 显示堆中对象的统计信息
+	permstat :Java堆内存的永久保存区域的类加载器的统计信息
+	finalizerinfo : 显示在F-Queue队列等待Finalizer线程执行finalizer方法的对象
+	dump : 生成堆转储快照
+	F : 当-dump没有响应时，强制生成dump快照
+	例:
+	jmap -dump:live,format=b,file=dump.hprof [pid]  #dump堆到文件,format指定输出格式，live指明是活着的对象,file指定文件名
+	jmap -heap [pid]  #打印heap的概要信息，GC使用的算法，heap的配置及使用情况，可以用此来判断内存目前的使用情况以及垃圾回收情况
+	jmap -finalizerinfo [pid]  #打印等待回收的对象信息
+	jmap -histo:live [pid] | more  #打印堆的对象统计，包括对象数、内存大小等等。jmap -histo:live 这个命令执行，JVM会先触发gc，然后再统计信息
+	jmap -permstat [pid]  #打印Java堆内存的永久区的类加载器的智能统计信息。对于每个类加载器而言，
+		#它的名称、活跃度、地址、父类加载器、它所加载的类的数量和大小都会被打印。此外，包含的字符串数量和大小也会被打印。
+		
+jconsole:  查看堆内存，内存占用，线程详情等信息
+visualVM: 可视化监控工具
+jhat: 分析JVM快照
+    jhat <dump.hprof> -J-Xmx512m[指定内存占用]
+
+jstack: 查看java堆栈信息
+
+java输出汇编指令
+-server -Xcomp -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly
+-XX:CompileCommand=compileronly,*class.method

@@ -1,0 +1,58 @@
+前期准备
+
+备份数据文件
+(库存数据)
+docker cp <containerId>:/data/dump.rdb /data/dump.rdb.back
+(全量数据)
+docker cp <containerId>:/data/appendonly.aof /data/appendonly.aof
+
+一.文件导入
+1.使用dump.rdb
+bgsave #备份RDB数据
+直接替换dump.rdb文件即可
+2.使用appendonly.aof文件
+
+3.将全量数据文件上传至新redis 服务器并导入 (192.168.20.33)
+#config set appendonly yes #开启appendonly模式
+#config set save ""        #更新appendonly模式刷新时间为立即刷新
+bgrewriteaof #备份AOF数据(使用重写方式压缩redis命令为最小命令集)
+4.copy数据文件
+docker cp <containerId>:/data/appendonly.aof /data/appendonly.aof
+
+5.数据文件导入新节点
+docker exec -i <containerId> redis-cli -h 127.0.0.1 -p 6379 --pipe  < appendonly.aof
+
+
+二.同步迁移
+1.进入redis服务器
+docker exec -i <containerId> redis-cli
+
+2.数据迁移
+migrate host port key| destination-db timeout [COPY] [REPLACE] [KEYS key]
+
+说明:
+host：目标Redis的IP地址
+port：目标Redis的端口
+key|""：Redis 3.0.6 后如果需要迁移多个键，此处为空字符串""
+destination-db：目标Redis的数据库索引
+timeout：迁移的超时时间（单位为毫秒）
+copy：如果添加此选项后，迁移后不删除源键。
+replace：如果添加此选项migrate不管目标Redis是否存在该键都会正常迁移进行数据覆盖
+keys：如果要删除多个建，填写keys key1 key2 key3
+
+例:
+migrate 192.168.10.10 6379 dev 0 1000 copy replace
+
+三.异常处理
+#aof文件损坏
+1.备份现有aof文件
+2.修复aof文件
+$redis-check-aof -fix appendonly.aof
+3.重启redis服务器，加载aof文件，恢复数据
+
+四.两种方式区别
+aof只追加日志，因此对服务器性能影响较小，速度比RDB快，消耗内存较小
+aof生成的文件太大，数据恢复的速度比RDB慢
+
+当RDB和AOF两种备份方式都开启时，redis优先使用AOF日志来恢复数据，因为AOF保存的文件比RDB更完整
+
