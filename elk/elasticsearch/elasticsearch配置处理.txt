@@ -1,0 +1,8 @@
+#centos 安装 elasticsearch
+异常信息:
+ERROR: [1] bootstrap checks failed
+es01    | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+解决方案:
+vi /etc/sysctl.conf
+vm.max_map_count=655360
+sysctl -p
