@@ -1,0 +1,21 @@
+
+cluster.name: elasticsearch
+node.name: es
+node.master: false
+node.data: true
+
+network.host: es
+http.port: 9200
+transport.tcp.port: 9300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+#less than 50%，The max size of the field data cache,eg 30% of node heap space, or an absolute value, eg 12GB. Defaultsto unbounded.
+indices.fielddata.cache.size: 30%
+
+discovery.zen.ping.unicast.hosts: ["master:9300", "es1:9300", "es2:9300"]
+discovery.zen.minimum_master_nodes: 1
+discovery.zen.ping_timeout: 5s
+
+bootstrap.memory_lock: true
+action.destructive_requires_name: true

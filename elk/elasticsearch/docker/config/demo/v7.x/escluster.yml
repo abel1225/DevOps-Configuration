@@ -1,0 +1,34 @@
+
+cluster.name: elasticsearch
+node.name: es
+node.master: false
+node.data: true
+
+network.host: es
+http.port: 9200
+transport.tcp.port: 9300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+#less than 50%，The max size of the field data cache,eg 30% of node heap space, or an absolute value, eg 12GB. Defaultsto unbounded.
+indices.fielddata.cache.size: 30%
+
+bootstrap.memory_lock: true
+action.destructive_requires_name: true
+#use default port 9300
+cluster.initial_master_nodes: ["172.19.0.2","172.19.0.3"]
+discovery.seed_hosts: ["172.19.0.2","172.19.0.3","172.19.0.4"]
+#######优化配置
+#bootstrap.memory_lock: true
+#indices.breaker.request.limit: 10%
+#index.merge.scheduler.max_thread_count: 1
+#indices.queries.cache.size: 20%
+#indices.requests.cache.size: 2%
+#indices.fielddata.cache.size: 30%
+#node.attr.box_type: hot
+######add to the end fro x-pack
+#xpack.security.enabled: true
+#xpack.security.transport.ssl.enabled: true
+#xpack.security.transport.ssl.verification_mode: certificate
+#xpack.security.transport.ssl.keystore.path: /etc/elastic/certificates.p12
+#xpack.security.transport.ssl.truststore.path: /etc/elastic/certificates.p12
