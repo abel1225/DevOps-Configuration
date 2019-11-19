@@ -1,0 +1,6 @@
+FROM ruby:2.5-slim
+MAINTAINER abel<abel0130@163.com>
+RUN gem install redis
+RUN mkdir /redis
+WORKDIR /redis
+ADD ./redis-trib.rb /redis/redis-trib.rb

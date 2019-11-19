@@ -46,10 +46,7 @@ services:
       - 6383:6379
     networks:
       - sentinel
-    ports:
-      - 6383:6379
     command: ["redis-server","--slaveof","repl-2","6379","--replica-announce-ip","192.168.174.129","--replica-announce-port","6383"]
-
 #  sentinel-1:
 #    build: ./build
 #    restart: always
