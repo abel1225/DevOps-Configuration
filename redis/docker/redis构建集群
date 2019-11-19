@@ -1,0 +1,4 @@
+docker run --rm -it zvelo/redis-trib create --replicas 1 [ip]:6381 [ip]:6382 [ip]:6383 [ip]:6384 [ip]:6385 [ip]:6386
+
+redis-cli方式
+redis-cli --cluster create [ip]:6379 [ip]:6379 [ip]:6379 --cluster-replicas 1

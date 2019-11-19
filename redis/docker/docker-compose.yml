@@ -16,7 +16,7 @@ services:
     #command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
     #command: redis-server /Users/lizhen/Documents/docker/redis/redis-4.0.conf
     #command: redis-server --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "volatile-lru", "--protected-mode", "no", "--cluster_enabled", "yes", "--notify-keyspace-events", "Eglx"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "volatile-lru", "--protected-mode", "no", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000", "--notify-keyspace-events", "Eglx"]
     networks:
      - net-redis
 networks:
