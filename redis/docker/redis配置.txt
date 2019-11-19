@@ -24,6 +24,10 @@ WARNING overcommit_memory is set to 0! Background save may fail under low memory
 echo -e "\nvm.overcommit_memory=1" >> /etc/sysctl.conf  或 vi /etcsysctl.conf , 然后reboot重启机器 或 sysctl -p
 echo 1 > /proc/sys/vm/overcommit_memory  不需要启机器就生效(临时生效)
 
+redis_node | 1:M 19 Nov 2019 10:22:36.760 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis.
+To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
 3.docker 访问redis服务命令
 docker exec -it redis_node_178_1 redis-cli -a redis#12345
 
