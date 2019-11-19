@@ -1,22 +1,22 @@
 version: "2"
 services:
   master:
-    image: redis:latest
+    image: redis:5.0.6-alpine3.10
     container_name: redis_node
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
+    restart: always
+    #ulimits:
+    #  nofile:
+    #    soft: 65536
+    #    hard: 65536
     ports:
       - "6379:6379"
+    volumes:
+      - /data/dockersource/redis:/data
     #command: redis-server -c ./redis-4.0.conf --requirepass redis#12345 --notify-keyspace-events Eglx
-    command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
+    #command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
     #command: redis-server /Users/lizhen/Documents/docker/redis/redis-4.0.conf
+    #command: redis-server --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "volatile-lru", "--protected-mode", "no", "--notify-keyspace-events", "Eglx"]
     networks:
      - net-redis
 networks:
