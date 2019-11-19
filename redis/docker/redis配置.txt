@@ -16,9 +16,11 @@ redis服务端配置
 
 2.警告信息处理
 WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
-打开etc/sysctl.conf
+打开/etc/sysctl.conf
 添加net.core.somaxconn=1024 然后执行sysctl -p 就可以永久生效
 echo -e "\nnet.core.somaxconn=1024" >> /etc/sysctl.conf
+临时生效
+echo 511 > /proc/sys/net/core/somaxconn
 
 WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
 echo -e "\nvm.overcommit_memory=1" >> /etc/sysctl.conf  或 vi /etcsysctl.conf , 然后reboot重启机器 或 sysctl -p
