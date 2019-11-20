@@ -1,0 +1,16 @@
+yum安装docker-compose
+
+1. 添加EPEL源
+yum install -y epel-release
+2. 安装python-pip
+yum install -y python-pip
+3. 安装docker-compose
+pip install docker-compose
+
+Could not find a version that satisfies the requirement docker-compose (from versions: )
+No matching distribution found for docker-compose
+You are using pip version 8.1.2, however version 9.0.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+更新pip版本 pip install --upgrade pip
+4.验证
+docker-compose -version
