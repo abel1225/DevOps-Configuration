@@ -31,8 +31,9 @@
 12. ### nexus
 13. ### nginx
 14. ### redis
-15. ### rocketMq
+15. ### rest
+16. ### rocketMq
     1. docker版本配置来源 [refer to](https://github.com/apache/rocketmq-docker)
-16. ### zk
+17. ### zk
  
 
