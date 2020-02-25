@@ -1,0 +1,8 @@
+#创建用户
+useradd user_name
+#创建用户组
+groupadd user_group
+#设置密码
+passwd user_name
+#更改用户权限
+chown [-R] user_name:user_group file|directory

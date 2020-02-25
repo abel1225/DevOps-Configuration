@@ -20,6 +20,7 @@ WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net
 添加net.core.somaxconn=1024 然后执行sysctl -p 就可以永久生效
 echo -e "\nnet.core.somaxconn=1024" >> /etc/sysctl.conf
 临时生效
+sysctl -w net.core.somaxconn = 511
 echo 511 > /proc/sys/net/core/somaxconn
 
 WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.

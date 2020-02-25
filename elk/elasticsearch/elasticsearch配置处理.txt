@@ -6,3 +6,6 @@ es01    | [1]: max virtual memory areas vm.max_map_count [65530] is too low, inc
 vi /etc/sysctl.conf
 vm.max_map_count=655360
 sysctl -p
+
+echo -e "\nvm.max_map_count=655360" >> /etc/sysctl.conf
+sysctl -p

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv1
+spec:
+  capacity:
+    storage: 200M
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.56.102
+    path: "/usr/local/k8s/redis/pv1"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-vp2
+spec:
+  capacity:
+    storage: 200M
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.56.102
+    path: "/usr/local/k8s/redis/pv2"
+

@@ -1,5 +1,8 @@
 GIT 屏蔽SSL验证
 git config --global http.sslVerify "false"
-GIT 慢
+GIT 提速
 git config --global http.postBuffer 524288000
+开启store保存账号
+git config --global credential.helper store
+
 

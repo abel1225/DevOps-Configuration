@@ -11,12 +11,12 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - /data/dockersource/redis:/data
+      - /data/docker/redis:/data
     #command: redis-server -c ./redis-4.0.conf --requirepass redis#12345 --notify-keyspace-events Eglx
     #command: redis-server --requirepass redis#0130  --notify-keyspace-events Eglx
     #command: redis-server /Users/lizhen/Documents/docker/redis/redis-4.0.conf
     #command: redis-server --appendonly yes --maxmemory-policy volatile-lru --protected-mode no --notify-keyspace-events Eglx
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "volatile-lru", "--protected-mode", "no", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000", "--notify-keyspace-events", "Eglx"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "volatile-lru", "--protected-mode", "no", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000", "--notify-keyspace-events", "Eglx", "--cluster-announce-ip", "[ip]", "--cluster-announce-port", "6379", "--cluster-announce-bus-port", "16379"]
     networks:
      - net-redis
 networks:

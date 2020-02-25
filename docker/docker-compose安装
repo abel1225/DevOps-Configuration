@@ -1,4 +1,5 @@
 yum安装docker-compose
+方法一
 
 1. 添加EPEL源
 yum install -y epel-release
@@ -12,5 +13,32 @@ No matching distribution found for docker-compose
 You are using pip version 8.1.2, however version 9.0.1 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
 更新pip版本 pip install --upgrade pip
+
+ERROR: jsonschema 3.2.0 has requirement six>=1.11.0, but you'll have six 1.9.0 which is incompatible.
+ERROR: cryptography 2.8 has requirement cffi!=1.11.3,>=1.8, but you'll have cffi 1.6.0 which is incompatible.
+ERROR: ipapython 4.6.4 has requirement dnspython>=1.15, but you'll have dnspython 1.12.0 which is incompatible.
+ERROR: ipapython 4.6.4 has requirement python-ldap>=3.0.0b1, but you'll have python-ldap 2.4.15 which is incompatible.
+pip install six --user -U
+pip install ipython --user -U
+pip install dnspython --user -U
+pip install python-ldap --user -U
+
+ReadTimeoutError: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Read timed out.
+指定源下载
+pip install -i https://pypi.douban.com/simple <需要安装的包>
+比如：
+pip install -i https://pypi.douban.com/simple requests
+
+ERROR: Cannot uninstall 'subprocess32'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
+pip install subprocess32 --ignore-installed
 4.验证
 docker-compose -version
+
+方法二
+#下载docket-compose
+curl -L https://github.com/docker/compose/releases/download/1.25.0-rc4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+#修改权限
+chmod +x /usr/local/bin/docker-compose
+
+

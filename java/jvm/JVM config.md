@@ -43,8 +43,10 @@ java -server
  -XX:+UseConcMarkSweepGC                                     --设置年老代为并发收集
  -XX:CMSFullGCsBeforeCompaction=1
  -XX:+CMSParallelRemarkEnabled
- -XX:+CMSScavengeBeforeRemark
+ -XX:+CMSScavengeBeforeRemark                                --开启或关闭在CMS重新标记阶段之前的清除（YGC）尝试,CMS并发标记阶段与用户线程并发进行，此阶段会产生已经被标记了的对象又发生变化的情况，若打开此开关，可在一定程度上降低CMS重新标记阶段对上述“又发生变化”对象的扫描时间，当然，“清除尝试”也会消耗一些时间，开启此开关并不会保证在标记阶段前一定会进行清除操作
  -XX:+ParallelRefProcEnabled
+ -XX:+CMSPermGenSweepingEnabled                              --允许对持久代进行清理, 这个参数表示是否会清理持久代。默认是不清理的，因此我们需要明确设置这个参数来调试持久代内存溢出问题。这个参数在Java6中被移除了，因此你需要使用 -XX:+CMSClassUnloadingEnabled 如果你是使用Java6或者后面更高的版本。那么解决持久代内存大小问题的参数看起来会是下面这样子：-XX:MaxPermSize=128m -XX:+UseConcMarkSweepGC XX:+CMSClassUnloadingEnabled
+ -XX:+CMSClassUnloadingEnabled                               --允许对类进行卸载,如果你启用了CMSClassUnloadingEnabled ，垃圾回收会清理持久代，移除不再使用的classes。这个参数只有在 UseConcMarkSweepGC 也启用的情况下才有用
  -XX:+UseCMSCompactAtFullCollection                          --打开对年老代的压缩。可能会影响性能，但是可以消除碎片
  -XX:CMSMaxAbortablePrecleanTime=6000
  -XX:CompileThreshold=10
@@ -141,7 +143,7 @@ java -server
 4.为了减少第二次暂停的时间，开启并行remark: -XX:+CMSParallelRemarkEnabled。如果remark还是过长的话，可以开启-XX:+CMSScavengeBeforeRemark选项，强制remark之前开始一次minor gc，减少remark的暂停时间，但是在remark之后也将立即开始又一次minor gc。
 
 5.为了避免Perm区满引起的full gc，建议开启CMS回收Perm区选项：
-+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled
+-XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled
 
 6.默认CMS是在tenured generation沾满68%的时候开始进行CMS收集，如果你的年老代增长不是那么快，并且希望降低CMS次数的话，可以适当调高此值：
 -XX:CMSInitiatingOccupancyFraction=80
