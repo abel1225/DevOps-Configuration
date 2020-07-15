@@ -1,0 +1,20 @@
+cluster.name: es
+node.master: true
+node.data: false
+node.name: 192.168.2.11
+#node.attr.box_type: hot
+#node.tag: hot
+path.data: /data/es
+path.logs: /data/log
+network.host: 192.168.2.11
+http.port: 9200
+transport.tcp.port: 9300
+transport.tcp.compress: true
+discovery.zen.ping.unicast.hosts: ["192.168.2.11"]
+cluster.routing.allocation.disk.watermark.low: 85%
+cluster.routing.allocation.disk.watermark.high: 90%
+indices.fielddata.cache.size: 10%
+indices.breaker.fielddata.limit: 30%
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+

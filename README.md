@@ -19,6 +19,7 @@
               startup.sh
          ```
 2. ### elk
+   [冷热分离配置](https://blog.csdn.net/weixin_34361881/article/details/86131416?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1.nonecase)
 3. ### git
 4. ### gitlib
 5. ### haproxy-keepalived
