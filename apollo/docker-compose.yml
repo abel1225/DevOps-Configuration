@@ -1,0 +1,60 @@
+version: '3'
+services:
+  apollo-portal:
+    image: docker.io/xzxiaoshan/apollo-portal:1.4.0
+    container_name: apollo-portal
+    network_mode: "host"
+    environment:
+      SERVER_PORT: 6165
+      # DataSource Info
+      DS_URL: "jdbc:mysql://localhost:3306/ApolloPortalDB?characterEncoding=utf8"
+      DS_USERNAME: "root"
+      DS_PASSWORD: "root"
+      # Environmental variable declaration (meta server url, different environments should have different meta server addresses)
+      DEV_META: "http://192.168.1.164:6166"
+      FAT_META: ""
+      UAT_META: ""
+      LPT_META: ""
+      PRO_META: ""
+    depends_on:
+      - apollo-adminservice
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+  apollo-configservice:
+    image: docker.io/xzxiaoshan/apollo-configservice:1.4.0
+    container_name: apollo-configservice
+    network_mode: "host"
+    environment:
+      SERVER_PORT: 6166
+      # DataSource Info
+      DS_URL: "jdbc:mysql://localhost:3306/ApolloConfigDB?characterEncoding=utf8"
+      DS_USERNAME: "root"
+      DS_PASSWORD: "root"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+  apollo-adminservice:
+    image: docker.io/xzxiaoshan/apollo-adminservice:1.4.0
+    container_name: apollo-adminservice
+    network_mode: "host"
+    environment:
+      SERVER_PORT: 6167
+      # DataSource Info
+      DS_URL: "jdbc:mysql://localhost:3306/ApolloConfigDB?characterEncoding=utf8"
+      DS_USERNAME: "root"
+      DS_PASSWORD: "root"
+    depends_on:
+      - apollo-configservice
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
