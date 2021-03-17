@@ -1,0 +1,16 @@
+1.生成密钥
+ssh-keygen -t rsa -C <邮箱>
+
+2.获取密钥内容
+cat ~/.ssh/id_rsa.pub
+
+3.将密钥内容粘贴到git中
+
+4.获取git bare信息
+git clone --bare <git完整仓库地址>
+
+4.设置ssh git remote地址
+git remote set-url origin <邮箱>:<git仓库地址(除domain)>
+
+5.上传代码
+git push --mirror
