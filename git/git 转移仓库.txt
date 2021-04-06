@@ -1,0 +1,21 @@
+1.克隆仓库
+git clone https://git.example.com/project.git
+cd project
+touch README.md
+git add README.md
+git commit -m "add README"
+git push -u origin master
+
+2.已有文件夹或仓库
+cd existing_folder
+git init
+git remote add origin https://git.example.com/project.git
+git add .
+git commit
+git push -u origin master
+
+3.导入代码库
+git clone --bare https://git.example.com/your/project.git your_path
+cd your_path
+git remote set-url origin https://git.example.com/project.git
+git push --mirror
