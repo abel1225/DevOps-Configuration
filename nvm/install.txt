@@ -1,0 +1,16 @@
+1,nvm git地址点击打开链接，安装命令
+
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+or Wget:
+
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash   (推荐wget)
+然后
+source ~/.bashrc
+
+2、通过命令 nvm --version 可查看版本，说明安装成功
+
+3、通过 nvm ls-remote可查看node所有版本
+
+4、通过 nvm install <version>(版本号) 例如：nvm install v10.6.0
+
+5、安装后可通过node -v ,npm -v 查看版本，说明安装成功
