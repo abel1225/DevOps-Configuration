@@ -1,0 +1,10 @@
+#添加任务
+crontab -e
+
+#查看任务
+crontab -l
+
+#删除任务
+cat /var/spool/cron/root
+sed -i 'test.sh/d' /var/spool/cron/root
+
