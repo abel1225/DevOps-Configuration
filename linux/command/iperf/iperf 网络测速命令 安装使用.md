@@ -1,5 +1,8 @@
 安装：
    因为软件需要使用公网下载服务器连通外网后 wget https://iperf.fr/download/fedora/iperf3-3.1.3-1.fc24.x86_64.rpm 使用yum -y install 安装RPM包
+
+[这里安装的命令是iperf3，使用命令的时候将iperf改为iperf3即可]
+
 参数说明：
 -s 以server模式启动。#iperf -s
 -c host以client模式启动。host是server端地址。#iperf -c serverip
