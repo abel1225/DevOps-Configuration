@@ -1,0 +1,67 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend
+  namespace: uat
+  labels:
+    app: backend
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+    kubesphere.io/creator: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend
+    spec:
+      volumes:
+        - name: host-time
+          hostPath:
+            path: /etc/localtime
+            type: ''
+      containers:
+        - name: container-backend
+          image: ${IMAGE}
+          ports:
+            - name: http-8080
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: JAVA_OPTS
+              value: >-
+                -Xmx800m -Xms800m -Xmn128m -Xss64m -Xdebug
+                -Ddop.deploy.file-extension=yaml -Dspring.profiles.active=uat
+          resources:
+            limits:
+              memory: 800Mi
+            requests:
+              memory: 800Mi
+          volumeMounts:
+            - name: host-time
+              readOnly: true
+              mountPath: /etc/localtime
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: default
+      serviceAccount: default
+      securityContext: {}
+      imagePullSecrets:
+        - name: docker-repo
+      affinity: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
