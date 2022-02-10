@@ -10,8 +10,6 @@ case $Status  in
         mkdir -p  $path
     fi
     \cp -f ${WORKSPACE}/shuyue_corelayer/com.shuyue.finance-server/target/*.jar $path
-    scp ${WORKSPACE}/shuyue_corelayer/com.shuyue.finance-server/target/finance-server.jar root@172.27.153.75:/data/java_server/
-ssh root@172.27.153.75 'sh /data/java_server/inventoryfinance/server_start2.sh finance-server.jar'
     #将打包好的war包备份到相应目录,覆盖已存在的目标
     echo "Completing!"
     ;;
@@ -19,9 +17,7 @@ ssh root@172.27.153.75 'sh /data/java_server/inventoryfinance/server_start2.sh f
       echo "Status:$Status"
       echo "Version:$Version"
       cd ${WORKSPACE}/bak/$Version            #进入备份目录
-      \cp -f *.jar ${WORKSPACE}/shuyue_corelayer/com.shuyue.finance-server/target/
-      scp ${WORKSPACE}/shuyue_corelayer/com.shuyue.finance-server/target/finance-server.jar root@172.27.153.75:/data/java_server/
-      ssh root@172.27.153.75 'sh /data/java_server/inventoryfinance/server_start2.sh finance-server.jar'
+      \cp -f *.jar ${WORKSPACE}/target/
       #将备份拷贝到程序打包目录中，并覆盖之前的war包
       ;;
   *)
