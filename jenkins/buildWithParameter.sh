@@ -9,7 +9,7 @@ case $Status  in
     else
         mkdir -p  $path
     fi
-    \cp -f ${WORKSPACE}/shuyue_corelayer/com.shuyue.finance-server/target/*.jar $path
+    \cp -f ${WORKSPACE}/target/*.jar $path
     #将打包好的war包备份到相应目录,覆盖已存在的目标
     echo "Completing!"
     ;;
