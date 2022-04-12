@@ -9,7 +9,8 @@ services:
     #    soft: 65536
     #    hard: 65536
     ports:
-      - "6379:6379"
+#      - "6379:6379"
+      - "16379:6379"
     volumes:
       - /data/docker/redis:/data
     #command: redis-server -c ./redis-4.0.conf --requirepass redis#12345 --notify-keyspace-events Eglx

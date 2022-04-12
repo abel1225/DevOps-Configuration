@@ -1,4 +1,5 @@
 #docker 1.13.1 default configuration
+#default location: /usr/lib/systemd/system/docker.service
 [Unit]
 Description=Docker Application Container Engine
 Documentation=http://docs.docker.com
