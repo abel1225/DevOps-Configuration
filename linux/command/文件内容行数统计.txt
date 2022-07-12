@@ -1,0 +1,1 @@
+find . -name *.java  -exec wc -l  {} \; | awk '{s+=$1}END{print s}'
