@@ -1,0 +1,20 @@
+# Put common setup steps in an initial stage
+FROM mcr.microsoft.com/mssql/server:2019-latest AS setup
+ENV MSSQL_PID=Developer
+ENV SA_PASSWORD=Password1?  # (weak password, easily extracted with `docker inspect`)
+ENV ACCEPT_EULA=Y           # (legally probably the end user needs to accept this not the image builder)
+
+# Have a stage specifically to populate the data directory
+FROM setup AS data
+# (copy-and-pasted from the question)
+USER mssql
+COPY rmsdev.bak /  # not under /var/opt/mssql
+RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started" \
+    && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -Q 'RESTORE DATABASE rmsdev FROM DISK = "/rmsdev.bak" WITH MOVE "rmsdev" to "/var/opt/mssql/data/rmsdev.mdf", MOVE "rmsdev_Log" to "/var/opt/mssql/data/rmsdev_log.ldf", NOUNLOAD, STATS = 5' \
+    && pkill sqlservr
+
+# Final stage that actually will actually be run.
+FROM setup
+# Copy the prepopulated data tree, but not the backup file
+COPY --from=data /var/opt/mssql /var/opt/mssql
+# Use the default USER, CMD, etc. from the base SQL Server image

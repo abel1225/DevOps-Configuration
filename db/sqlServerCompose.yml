@@ -1,0 +1,25 @@
+version: '3'
+services:
+  #服务名称
+  sqlserver-db:
+    #容器名称
+    container_name: sqlserver-db
+    #镜像名称
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    #端口映射
+    ports:
+      - 1433:1433
+    #挂载
+    volumes:
+      - ./data:/var/opt/mssql/data
+    #环境变量
+    environment:
+      - ACCEPT_EULA=Y
+      #SA用户密码长度必须至少为 8 个字符，并包含以下四组中的三组字符：大写字母、小写字母、10 位基数和符号
+      - SA_PASSWORD=MSsql12345678
+      #Developer : This will run the container using the Developer Edition (this is the default if no MSSQL_PID environment variable is supplied)
+      #Express : This will run the container using the Express Edition
+      #Standard : This will run the container using the Standard Edition
+      #Enterprise : This will run the container using the Enterprise Edition
+      #EnterpriseCore : This will run the container using the Enterprise Edition Core
+      - MSSQL_PID=Developer
