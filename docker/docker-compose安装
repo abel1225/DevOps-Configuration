@@ -36,7 +36,7 @@ docker-compose -version
 
 方法二
 #下载docket-compose
-curl -L https://github.com/docker/compose/releases/download/1.25.0-rc4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 
 #修改权限
 chmod +x /usr/local/bin/docker-compose
