@@ -1,0 +1,40 @@
+[{
+   "id": "auth-router",
+   "order": 1,
+   "predicates": [{
+                    "args": {
+                      "pattern": "/auth/**"
+                    },
+                    "name": "Path"
+                  }],
+   "uri": "lb://auth",
+   "metadata":{
+     "name":"权限中心"
+   }
+ },{
+   "id": "file-router",
+   "order": 2,
+   "predicates": [{
+                    "args": {
+                      "pattern": "/file/**"
+                    },
+                    "name": "Path"
+                  }],
+   "uri": "lb://file",
+   "metadata":{
+     "name":"文件服务"
+   }
+ },{
+   "id": "center-router",
+   "order": 3,
+   "predicates": [{
+                    "args": {
+                      "pattern": "/center/**"
+                    },
+                    "name": "Path"
+                  }],
+   "uri": "lb://center",
+   "metadata":{
+     "name":"中台"
+   }
+ }]
