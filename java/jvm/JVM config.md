@@ -63,6 +63,15 @@ java -server
 
 
  调优总结
+        1. -XX:+HeapDumpOnOutOfMemoryError
+        当OutOfMemoryError发生时自动生成 Heap Dump 文件。
+        当你需要分析Java内存使用情况时，往往是在OOM(OutOfMemoryError)发生时。
+        2. -XX:+HeapDumpBeforeFullGC
+        当 JVM 执行 FullGC 前执行 dump。
+        3. -XX:+HeapDumpAfterFullGC
+        当 JVM 执行 FullGC 后执行 dump。
+        4. -XX:+HeapDumpOnCtrlBreak
+        交互式获取dump。在控制台按下快捷键Ctrl + Break时，JVM就会转存一下堆快照。
 
  　　　　-XX:+UseCMSCompactAtFullCollection：使用并发收集器时，开启对年老代的压缩
 
