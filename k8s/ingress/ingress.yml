@@ -1,0 +1,352 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: kubesphere-router-kubesphere-system-579dc5bc56-zqgwr
+  generateName: kubesphere-router-kubesphere-system-579dc5bc56-
+  namespace: kubesphere-controls-system
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: kubesphere-router-kubesphere-system-ingress
+    app.kubernetes.io/name: ingress-nginx
+    pod-template-hash: 579dc5bc56
+    security.istio.io/tlsMode: istio
+    service.istio.io/canonical-name: ingress-nginx
+    service.istio.io/canonical-revision: latest
+  annotations:
+    cni.projectcalico.org/podIP: 172.30.1.149/32
+    cni.projectcalico.org/podIPs: 172.30.1.149/32
+    kubectl.kubernetes.io/default-container: controller
+    kubectl.kubernetes.io/default-logs-container: controller
+    prometheus.io/path: /stats/prometheus
+    prometheus.io/port: '15020'
+    prometheus.io/scrape: 'true'
+    sidecar.istio.io/inject: 'true'
+    sidecar.istio.io/status: >-
+      {"initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-data","istio-podinfo","istiod-ca-cert"],"imagePullSecrets":null,"revision":"1-11-2"}
+spec:
+  volumes:
+    - name: istio-envoy
+      emptyDir:
+        medium: Memory
+    - name: istio-data
+      emptyDir: {}
+    - name: istio-podinfo
+      downwardAPI:
+        items:
+          - path: labels
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.labels
+          - path: annotations
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.annotations
+        defaultMode: 420
+    - name: istiod-ca-cert
+      configMap:
+        name: istio-ca-root-cert
+        defaultMode: 420
+    - name: kube-api-access-x7wn4
+      projected:
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+                - key: ca.crt
+                  path: ca.crt
+          - downwardAPI:
+              items:
+                - path: namespace
+                  fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+        defaultMode: 420
+  initContainers:
+    - name: istio-init
+      image: 'registry.cn-beijing.aliyuncs.com/kubesphereio/proxyv2:1.11.1'
+      args:
+        - istio-iptables
+        - '-p'
+        - '15001'
+        - '-z'
+        - '15006'
+        - '-u'
+        - '1337'
+        - '-m'
+        - REDIRECT
+        - '-i'
+        - '*'
+        - '-x'
+        - ''
+        - '-b'
+        - '*'
+        - '-d'
+        - '15090,15021,15020'
+      resources:
+        limits:
+          cpu: '2'
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      volumeMounts:
+        - name: kube-api-access-x7wn4
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          add:
+            - NET_ADMIN
+            - NET_RAW
+          drop:
+            - ALL
+        privileged: false
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+        readOnlyRootFilesystem: false
+        allowPrivilegeEscalation: false
+  containers:
+    - name: controller
+      image: >-
+        registry.cn-beijing.aliyuncs.com/kubesphereio/nginx-ingress-controller:v0.48.1
+      args:
+        - /nginx-ingress-controller
+        - '--publish-service=$(POD_NAMESPACE)/kubesphere-router-kubesphere-system'
+        - >-
+          --election-id=ingress-controller-leader-kubesphere-router-kubesphere-system
+        - '--ingress-class=nginx'
+        - '--configmap=$(POD_NAMESPACE)/kubesphere-router-kubesphere-system'
+      ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        - name: metrics
+          containerPort: 10254
+          protocol: TCP
+      env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: LD_PRELOAD
+          value: /usr/local/lib/libmimalloc.so
+      resources:
+        requests:
+          cpu: 100m
+          memory: 90Mi
+      volumeMounts:
+        - name: kube-api-access-x7wn4
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      livenessProbe:
+        httpGet:
+          path: /app-health/controller/livez
+          port: 15020
+          scheme: HTTP
+        initialDelaySeconds: 10
+        timeoutSeconds: 1
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 5
+      readinessProbe:
+        httpGet:
+          path: /app-health/controller/readyz
+          port: 15020
+          scheme: HTTP
+        initialDelaySeconds: 10
+        timeoutSeconds: 1
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 3
+      lifecycle:
+        preStop:
+          exec:
+            command:
+              - /wait-shutdown
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          add:
+            - NET_BIND_SERVICE
+          drop:
+            - ALL
+        runAsUser: 101
+        allowPrivilegeEscalation: true
+    - name: istio-proxy
+      image: 'registry.cn-beijing.aliyuncs.com/kubesphereio/proxyv2:1.11.1'
+      args:
+        - proxy
+        - sidecar
+        - '--domain'
+        - $(POD_NAMESPACE).svc.cluster.local
+        - '--proxyLogLevel=warning'
+        - '--proxyComponentLogLevel=misc:error'
+        - '--log_output_level=default:info'
+        - '--concurrency'
+        - '2'
+      ports:
+        - name: http-envoy-prom
+          containerPort: 15090
+          protocol: TCP
+      env:
+        - name: JWT_POLICY
+          value: first-party-jwt
+        - name: PILOT_CERT_PROVIDER
+          value: istiod
+        - name: CA_ADDR
+          value: 'istiod-1-11-2.istio-system.svc:15012'
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: INSTANCE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.serviceAccountName
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: PROXY_CONFIG
+          value: >
+            {"discoveryAddress":"istiod-1-11-2.istio-system.svc:15012","tracing":{"zipkin":{"address":"jaeger-collector.istio-system.svc:9411"}}}
+        - name: ISTIO_META_POD_PORTS
+          value: |-
+            [
+                {"name":"http","containerPort":80,"protocol":"TCP"}
+                ,{"name":"https","containerPort":443,"protocol":"TCP"}
+                ,{"name":"metrics","containerPort":10254,"protocol":"TCP"}
+            ]
+        - name: ISTIO_META_APP_CONTAINERS
+          value: controller
+        - name: ISTIO_META_CLUSTER_ID
+          value: Kubernetes
+        - name: ISTIO_META_INTERCEPTION_MODE
+          value: REDIRECT
+        - name: ISTIO_META_WORKLOAD_NAME
+          value: kubesphere-router-kubesphere-system
+        - name: ISTIO_META_OWNER
+          value: >-
+            kubernetes://apis/apps/v1/namespaces/kubesphere-controls-system/deployments/kubesphere-router-kubesphere-system
+        - name: ISTIO_META_MESH_ID
+          value: cluster.local
+        - name: TRUST_DOMAIN
+          value: cluster.local
+        - name: ISTIO_KUBE_APP_PROBERS
+          value: >-
+            {"/app-health/controller/livez":{"httpGet":{"path":"/healthz","port":10254,"scheme":"HTTP"},"timeoutSeconds":1},"/app-health/controller/readyz":{"httpGet":{"path":"/healthz","port":10254,"scheme":"HTTP"},"timeoutSeconds":1}}
+      resources:
+        limits:
+          cpu: '2'
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      volumeMounts:
+        - name: istiod-ca-cert
+          mountPath: /var/run/secrets/istio
+        - name: istio-data
+          mountPath: /var/lib/istio/data
+        - name: istio-envoy
+          mountPath: /etc/istio/proxy
+        - name: istio-podinfo
+          mountPath: /etc/istio/pod
+        - name: kube-api-access-x7wn4
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      readinessProbe:
+        httpGet:
+          path: /healthz/ready
+          port: 15021
+          scheme: HTTP
+        initialDelaySeconds: 1
+        timeoutSeconds: 3
+        periodSeconds: 2
+        successThreshold: 1
+        failureThreshold: 30
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        runAsUser: 1337
+        runAsGroup: 1337
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+  restartPolicy: Always
+  terminationGracePeriodSeconds: 300
+  dnsPolicy: ClusterFirst
+  nodeSelector:
+    kubernetes.io/os: linux
+  serviceAccountName: kubesphere-router-kubesphere-system
+  serviceAccount: kubesphere-router-kubesphere-system
+  nodeName: ks-node06
+  securityContext: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - ingress-nginx
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - kubesphere-router-kubesphere-system-ingress
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - controller
+            topologyKey: kubernetes.io/hostname
+  schedulerName: default-scheduler
+  tolerations:
+    - key: node.kubernetes.io/not-ready
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+    - key: node.kubernetes.io/unreachable
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+  priority: 0
+  enableServiceLinks: true
+  preemptionPolicy: PreemptLowerPriority

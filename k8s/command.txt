@@ -1,2 +1,0 @@
-
-kubectl create -f pv.yaml
