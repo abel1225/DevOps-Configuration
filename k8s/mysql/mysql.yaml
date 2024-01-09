@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: mysql
+  namespace: nacos-test
+  labels:
+    name: mysql
+spec:
+  replicas: 1
+  selector:
+    name: mysql
+  template:
+    metadata:
+      labels:
+        name: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: nacos/nacos-mysql:5.7
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: nacos-mysql
+              mountPath: /var/lib/mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "liubei@2020"
+            - name: MYSQL_DATABASE
+              value: "nacos"
+            - name: MYSQL_USER
+              value: "nacos"
+            - name: MYSQL_PASSWORD
+              value: "liubei@2020"
+            - name: TZ
+              value: Asia/Shanghai
+      volumes:
+        - name: nacos-mysql
+          persistentVolumeClaim:
+            claimName: nacos-mysql-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nacos-mysql-pvc
+  namespace: nacos-test
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: nacos-test
+  labels:
+    name: mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    name: mysql

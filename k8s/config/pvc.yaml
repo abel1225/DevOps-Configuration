@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: example-pvc
+spec:
+  accessModes:
+  # ReadWriteOnce (RWO)：该模式只允许一个节点进行读写操作，其他节点无法挂载该卷。这通常是通过节点上的单个磁盘或磁盘分区实现的。在该模式下，PVC 只能被绑定到一个 Pod。
+  # ReadOnlyMany (ROX)：该模式允许多个节点进行只读访问，但不支持写操作。这在多个 Pod 需要同时读取相同数据的情况下很有用。例如，一个静态文件服务器可以使用 ROX 模式共享文件给多个应用程序实例。
+  # ReadWriteMany (RWX)：该模式允许多个节点进行读写操作。这通常需要使用网络文件系统（NFS）等共享存储来实现，并且在一些云服务提供商的托管平台中也提供了此功能。RWX 是最具灵活性的模式，但在某些环境中可能会有性能和同步的限制。
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: example-storage # 如果将storageClassName设置为""，表示不使用特定的 StorageClass，使用默认的空 StorageClass

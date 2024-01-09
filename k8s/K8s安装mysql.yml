@@ -1,0 +1,172 @@
+# 创建 namespace 或使用命令 kubectl create namespace devops，需要提前创建好
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: devops
+
+---
+# 创建数据库配置
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nacos-mysql-config
+  namespace: devops
+data:
+  custom.cnf: |-
+    [mysqld]
+    #performance setttings
+    lock_wait_timeout = 3600
+    open_files_limit    = 65535
+    back_log = 1024
+    max_connections = 1024
+    max_connect_errors = 1000000
+    table_open_cache = 1024
+    table_definition_cache = 1024
+    thread_stack = 512K
+    sort_buffer_size = 4M
+    join_buffer_size = 4M
+    read_buffer_size = 8M
+    read_rnd_buffer_size = 4M
+    bulk_insert_buffer_size = 64M
+    thread_cache_size = 768
+    interactive_timeout = 600
+    wait_timeout = 600
+    tmp_table_size = 32M
+    max_heap_table_size = 32M
+
+---
+# 数据库密码
+kind: Secret
+apiVersion: v1
+metadata:
+  name: nacos-mysql-secret
+  namespace: devops
+data:
+  MYSQL_ROOT_PASSWORD: UEA4OHcwcmQ=
+  MYSQL_PASSWORD: UEA4OHcwcmQ=
+type: Opaque
+# type: Opaque意味着从kubernetes的角度来看，这个秘密的内容是非结构化的，它可以包含任意键值对。
+# 相比之下，有秘密存储ServiceAccount凭证，或用作ImagePullSecret。这些内容有限。
+
+---
+# 通过StatefulSet部署nacos
+# StatefulSet部署方式为每个POD生成固定的名称，如nacos-0、nacos-1、nacos-2等
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: nacos-mysql
+  namespace: devops
+  labels:
+    app: nacos-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-mysql
+  template:
+    metadata:
+      labels:
+        app: nacos-mysql
+    spec:
+      volumes:
+        - name: host-time
+          hostPath:
+            path: /etc/localtime
+            type: ''
+        - name: config
+          configMap:
+            name: nacos-mysql-config
+            items:
+              - key: custom.cnf
+                path: custom.cnf
+            defaultMode: 420
+      containers:
+        - name: nacos-mysql
+          image: 'registry.zdevops.com.cn/library/mysql:5.7.38'
+          ports:
+            - name: tcp-3306
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nacos-mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nacos-mysql-secret
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_DATABASE
+              value: "nacos"
+            - name: MYSQL_USER
+              value: "nacos"
+          resources:
+            limits:
+              cpu: '2'
+              memory: 4000Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          volumeMounts:
+            - name: host-time
+              mountPath: /etc/localtime
+            - name: data
+              mountPath: /var/lib/mysql
+            - name: config
+              mountPath: /etc/mysql/conf.d/custom.cnf
+              subPath: custom.cnf
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        namespace: devops
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: glusterfs
+  serviceName: mysql-headless
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nacos-mysql-headless
+  namespace: devops
+  labels:
+    app: nacos-mysql
+spec:
+  ports:
+    - name: tcp-3306
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: nacos-mysql
+  clusterIP: None
+  type: ClusterIP
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nacos-mysql-external
+  namespace: devops
+  labels:
+    app: nacos-mysql-external
+spec:
+  ports:
+    - name: tcp-mysql-external
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+      nodePort: 31006
+  selector:
+    app: nacos-mysql
+  type: NodePort
+
+
+

@@ -1,3 +1,4 @@
+# 构建基于nfs的PV
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -15,13 +16,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-vp2
+  name: nfs-pv2
 spec:
   capacity:
     storage: 200M
   accessModes:
     - ReadWriteMany
-  nfs:
-    server: 192.168.56.102
-    path: "/usr/local/k8s/redis/pv2"
+#  nfs:
+#    server: 192.168.56.102
+#    path: "/usr/local/k8s/redis/pv2"
 

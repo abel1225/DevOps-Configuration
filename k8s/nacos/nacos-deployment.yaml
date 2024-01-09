@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nacos-deployment
+  namespace: devops
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: nacos
+        app: nacos
+    spec:
+      containers:
+        #nacos-mysql
+        - image: nacos/nacos-mysql:5.7
+          imagePullPolicy: Always
+          name: nacos-mysql
+          env:
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "nacos"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "nacos123"
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: nacos-pv
+              subPath: mysql
+          ports:
+            - containerPort: 3306
+              name: "mysql-port"
+        #nacos
+        - image: nacos/nacos-server:latest
+          imagePullPolicy: Always
+          name: nacos-server
+          env:
+            - name: "PREFER_HOST_MODE"
+              value: "hostname"
+            - name: "MODE"
+              value: "standalone"
+            - name: "SPRING_DATASOURCE_PLATFORM"
+              value: "mysql"
+            - name: "MYSQL_SERVICE_HOST"
+              value: "mysql"
+            - name: "MYSQL_SERVICE_DB_NAME"
+              value: "nacos_devtest"
+            - name: "MYSQL_SERVICE_PORT"
+              value: "3306"
+            - name: "MYSQL_SERVICE_USER"
+              value: "root"
+            - name: "MYSQL_SERVICE_PASSWORD"
+              value: "nacos123"
+          ports:
+            - containerPort: 8848
+              name: "nacos-port"
+          volumeMounts:
+            - mountPath: /home/nacos/logs
+              name: nacos-pv
+              subPath: logs
+            - name: nacos-config
+              mountPath: /home/nacos/init.d/custom.properties
+              subPath: custom.properties
+            - mountPath: /etc/localtime
+              name: nacostime
+      volumes:
+        - name: nacos-pv
+          persistentVolumeClaim:
+            claimName: nacos-pvc
+        - name: nacos-config
+          configMap:
+            name: nacos-custom.properties
+        - name: nacostime
+          hostPath:
+            path: /etc/localtime
