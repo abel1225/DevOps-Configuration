@@ -34,7 +34,46 @@ Kubernetes 是一个开源的容器编排和管理平台，而 containerd 则是
 =
 步骤 1: 准备环境
 -
-确保在所有节点上都安装了 containerd。具体安装步骤可以参考 containerd 官方文档。
+确保在所有节点上都安装了 containerd。具体安装步骤可以参考 [containerd 官方文档](https://containerd.io)。
+安装containerd
+- 以下步骤所有节点都执行。
+
+- 安装
+```shell
+wget https://github.com/containerd/containerd/releases/download/v1.7.2/containerd-1.7.2-linux-amd64.tar.gz
+tar Cxzvf /usr/local containerd-1.7.2-linux-amd64.tar.gz
+```
+- 修改配置
+```shell
+mkdir /etc/containerd
+containerd config default > /etc/containerd/config.toml
+vim /etc/containerd/config.toml
+#SystemdCgroup的值改为true
+SystemdCgroup = true
+#由于国内下载不到registry.k8s.io的镜像，修改sandbox_image的值为：
+sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.9"
+```
+- 启动服务
+```shell
+mkdir -p /usr/local/lib/systemd/system
+wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
+mv containerd.service /usr/local/lib/systemd/system
+systemctl daemon-reload
+systemctl enable --now containerd
+```
+- 验证安装
+```shell
+[root@centos01 opt]# ctr version
+Client:
+Version:  v1.7.2
+Revision: 0cae528dd6cb557f7201036e9f43420650207b58
+Go version: go1.20.4
+
+Server:
+Version:  v1.7.2
+Revision: 0cae528dd6cb557f7201036e9f43420650207b58
+UUID: 747cbf1b-17d4-4124-987a-203d8c72de7c
+```
 
 步骤 2: 安装 Kubernetes 工具
 -

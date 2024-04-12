@@ -19,10 +19,10 @@ vim /etc/selinux/config
 #修改SELINUX的值
 SELINUX=disabled
 关闭swap内存，所有节点都执行
-
 swapoff -a
+
 vim /etc/fstab
-# 将该行注释掉
+#将该行注释掉
 #/dev/mapper/cs-swap swap
 配置网桥，所有节点都执行
 
