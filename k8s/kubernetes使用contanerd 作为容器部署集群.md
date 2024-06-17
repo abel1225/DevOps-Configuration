@@ -83,8 +83,13 @@ sudo apt-get update &amp;&amp; sudo apt-get install -y kubelet kubeadm kubectl
 ```
 
 步骤 3: 初始化主节点
--
-在主节点上运行 kubeadm init 命令：
+- 在 Kubelet 启动参数中添加以下内容
+```shell
+KUBELET_EXTRA_ARGS="--container-runtime=remote \
+--container-runtime-endpoint=unix:///var/run/cri-containerd.sock \
+--image-service-endpoint=unix:///var/run/cri-containerd.sock"
+```
+- 在主节点上运行 kubeadm init 命令：
 ```shell
 sudo kubeadm init --pod-network-cidr=CIDR_RANGE
 ```
