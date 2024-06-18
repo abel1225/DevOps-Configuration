@@ -1,35 +1,35 @@
 version: "2"
 services:
-  gitlib:
+  gitlab:
     image: gitlab/gitlab-ce:latest
-    container_name: gitlib
+    container_name: gitlab
     restart: unless-stopped
     privileged: true
-    hostname: gitlib
+    hostname: gitlab
     environment:
 #      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       TZ: "Asia/Shanghai"
-      GITLIB_OMNBUS_CONFIG: |
+      GITLAB_OMNBUS_CONFIG: |
         external_url 'http://127.0.0.1'
-        gitlib_rails['time_zone'] = 'Asia/Shanghai'
-        gitlib_rails['smtp_enable'] = true
-        gitlib_rails['smtp_address'] = 'smtp.163.com'
-        gitlib_rails['smtp_port'] = 465
-        gitlib_rails['smtp_user_name'] = 'abel0130@163.com'
-        gitlib_rails['smtp_password'] = 'zhenxin2009'
-        gitlib_rails['smtp_domain'] = '163.com'
-        gitlib_rails['smtp_authentication'] = 'login'
-        gitlib_rails['smtp_enable_starttls_auto'] = true
-        gitlib_rails['smtp_tls'] = true
-        gitlib_rails['gitlib_email_from'] = 'abel0130@163.com'
-        gitlib_rails['gitlib_ssh_host'] = '127.0.0.1'
-        gitlib_rails['gitlib_shell_ssh_port'] = 222
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = 'smtp.163.com'
+        gitlab_rails['smtp_port'] = 465
+        gitlab_rails['smtp_user_name'] = 'abel0130@163.com'
+        gitlab_rails['smtp_password'] = 'zhenxin2009'
+        gitlab_rails['smtp_domain'] = '163.com'
+        gitlab_rails['smtp_authentication'] = 'login'
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['smtp_tls'] = true
+        gitlab_rails['gitlab_email_from'] = 'abel0130@163.com'
+        gitlab_rails['gitlab_ssh_host'] = '127.0.0.1'
+        gitlab_rails['gitlab_shell_ssh_port'] = 222
 
     ports:
       - "80:80"
       - "443:443"
       - "222:22"
     volumes:
-      - ${pwd}/gitlib/config:/etc/gitlib
-      - ${pwd}/gitlib/data:/etc/gitlib
-      - ${pwd}/gitlib/logs:/etc/gitlib
+      - ${pwd}/gitlab/config:/etc/gitlab
+      - ${pwd}/gitlab/data:/etc/gitlab
+      - ${pwd}/gitlab/logs:/etc/gitlab
