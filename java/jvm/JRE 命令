@@ -1,3 +1,3 @@
 java执行jar文件
-java -jar xxx.jar --spring.profiles.active=default -Xdebug(开启debug模式)
+nohup java -jar xxx.jar -Dspring.profiles.active=default -Xdebug(开启debug模式) > /dev/null 2>&1 &
 
